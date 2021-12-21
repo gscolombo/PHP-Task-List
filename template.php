@@ -44,7 +44,9 @@
                 <th>Prioridade</th>
                 <th>Concluída?</th>
             </tr>
-            <?php foreach ($task_list as $task) :?>
+            <?php 
+                foreach ($task_list as $task) :
+            ?>
                 
                 <tr>
                     <td><?php echo $task['name']; ?></td>
