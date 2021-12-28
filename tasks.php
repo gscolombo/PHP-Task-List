@@ -1,6 +1,6 @@
 <?php 
-
-    session_start(); 
+    require 'db.php';
+    require 'helpers.php';
 
     if (array_key_exists('name', $_GET) && $_GET['name'] != '') {
         $task = [];
@@ -10,16 +10,16 @@
         }
 
         if (!array_key_exists('concluded', $task)) {
-            $task['concluded'] = "Não";
+            $task['concluded'] = 0;
+        } else {
+            $task['concluded'] = 1;
         }
 
-        $_SESSION['task_list'][] = $task;
+        save_task($connection, $task);
     }
 
-    $task_list = [];
-    if (array_key_exists('task_list', $_SESSION)){
-        $task_list = $_SESSION['task_list'];
-    }
+
+    $task_list = find_tasks($connection);
     
-    include "template.php";
+    require "template.php";
 ?>
