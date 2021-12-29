@@ -1,6 +1,7 @@
 /* Geral */
 * {
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 /* Formulário */
@@ -29,11 +30,27 @@ fieldset label input, textarea {
     margin-top: 7.5px;
 }
 
-fieldset input[type='submit'] {
+fieldset input[type='submit'], fieldset a {
     align-self: flex-end;
     max-width: fit-content;
     padding: 5px;
     margin-top: 5px;
+}
+
+a {
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+a:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
 }
 
 fieldset .description textarea {
@@ -78,9 +95,11 @@ fieldset .concluded input {
     margin-left: 20px;
 }
 
-
-
 /* Lista de Tarefas */
+table {
+    margin-bottom: 10px;
+}
+
 table th {
     background-color: lightgrey;
     padding: 5px;
@@ -90,7 +109,7 @@ table th {
 
 
 table td {
-    padding: 10px 5px 0 5px;
+    padding: 10px 5px 10px 5px;
     border-bottom: 1px solid black;
     vertical-align: baseline;
 }

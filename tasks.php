@@ -2,22 +2,15 @@
     require 'db.php';
     require 'helpers.php';
 
+    $show_tasks = true;
+
     if (array_key_exists('name', $_GET) && $_GET['name'] != '') {
-        $task = [];
-
-        foreach(array_keys($_GET) as $key) {
-            $task[$key] = $_GET[$key];
-        }
-
-        if (!array_key_exists('concluded', $task)) {
-            $task['concluded'] = 0;
-        } else {
-            $task['concluded'] = 1;
-        }
+        $task = set_task();
 
         save_task($connection, $task);
+        header('Location: tasks.php');
+        die();
     }
-
 
     $task_list = find_tasks($connection);
     

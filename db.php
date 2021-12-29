@@ -25,6 +25,12 @@
         return $tasks;
     }
 
+    function find_task($conn, $id) {
+        $query = "SELECT * FROM tasks WHERE id = {$id}";
+        $query_result = mysqli_query($conn, $query);
+        return mysqli_fetch_assoc($query_result);
+    }
+
     function save_task($conn, $task) {
         $query = "INSERT INTO tasks
             (name, description, priority, deadline, concluded)
@@ -37,6 +43,24 @@
                 {$task['concluded']}
             )";
 
+        mysqli_query($conn, $query);
+    }
+
+    function edit_task($conn, $task) {
+        $query = 
+        "UPDATE tasks SET
+            name = '{$task['name']}',
+            description = '{$task['description']}',
+            deadline = '{$task['deadline']}',
+            priority = {$task['priority']},
+            concluded = {$task['concluded']}
+        WHERE id = {$task['id']}";
+
+        mysqli_query($conn, $query);
+    }
+
+    function delete_task($conn, $id) {
+        $query = "DELETE FROM tasks WHERE id = {$id}";
         mysqli_query($conn, $query);
     }
 ?>
