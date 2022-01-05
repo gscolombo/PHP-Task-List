@@ -1,22 +1,13 @@
-<?php 
-    if (!isset($task)) {
-        $task = [
-            'id' => '',
-            'name' => '',
-            'description' => '',
-            'deadline' => '',
-            'priority' => 1,
-            'concluded' => '',
-        ];
-    }
-?>
-<form>
+<form method="post">
     <fieldset>
         <legend>Nova tarefa</legend>
         <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
         <label class="task">
             Tarefa:
-            <input type="text" name="name" value="<?php echo $task['name']; ?>">
+            <?php if ($is_invalid && array_key_exists('name', $errors)) : ?>
+                <span><?php echo $errors['name']; ?></span>
+            <?php endif; ?>
+                <input type="text" name="name" value="<?php echo $task['name']; ?>">
         </label>
         <label class="description">
             Descrição (Opcional):

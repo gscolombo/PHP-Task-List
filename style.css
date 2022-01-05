@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+span {
+    color: red;
+    font-size: 0.85rem;
+}
+
 /* Formulário */
 form {
     max-width: 40%;

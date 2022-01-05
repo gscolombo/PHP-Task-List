@@ -42,8 +42,8 @@
     function set_task() {
         $task = [];
 
-        foreach(array_keys($_GET) as $key) {
-            $task[$key] = $_GET[$key];
+        foreach(array_keys($_POST) as $key) {
+            $task[$key] = $_POST[$key];
         };
 
         if (array_key_exists('deadline', $task)) {
@@ -57,5 +57,13 @@
         }
 
         return $task;
+    }
+
+    function has_data_task() {
+        if (count($_POST) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 ?>
