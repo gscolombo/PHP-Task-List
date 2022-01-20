@@ -60,7 +60,40 @@
     }
 
     function delete_task($conn, $id) {
+        $attach_query = "SELECT * FROM attachments WHERE task_id = {$id}";
+        $result = mysqli_query($conn, $attach_query);
+
+        while ($attach = mysqli_fetch_assoc($result)) {
+            mysqli_query($conn, "DELETE FROM attachments WHERE id = {$attach['id']}");
+            unlink("attachments/{$attach['file']}");
+        };
+
         $query = "DELETE FROM tasks WHERE id = {$id}";
         mysqli_query($conn, $query);
+    }
+
+    function save_attachment($conn, $attachment) {
+        $query = "INSERT INTO attachments
+                (task_id, name, file)
+                VALUES
+                (
+                    {$attachment['task_id']},
+                    '{$attachment['name']}',
+                    '{$attachment['file']}'
+                )
+            ";
+            
+        mysqli_query($conn, $query);
+    }
+
+    function find_attachments($conn, $id) {
+        $query = "SELECT * FROM attachments WHERE task_id = $id";
+        $result = mysqli_query($conn, $query);
+
+        $attachments = [];
+        while ($attachment = mysqli_fetch_assoc($result)) {
+            $attachments[] = $attachment;
+        }
+        return $attachments;
     }
 ?>

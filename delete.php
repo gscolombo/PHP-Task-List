@@ -6,7 +6,7 @@
         mysqli_query($connection, $query);
         header('Location: tasks.php');
     } else {
-        delete_task($connection, $_POST['id']);
+        delete_task($connection, $_GET['id']);
         header('Location: tasks.php');
     }
 ?>

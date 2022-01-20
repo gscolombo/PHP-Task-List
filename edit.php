@@ -24,6 +24,7 @@
     }
     
     $task = find_task($connection, $_GET['id']);
+    $attachments = find_attachments($connection, $_GET['id']);
 
     $task['name'] = array_key_exists('name', $_POST) ? $_POST['name'] : $task['name'];
     $task['description'] = array_key_exists('description', $_POST) ? $_POST['description'] : $task['description'];

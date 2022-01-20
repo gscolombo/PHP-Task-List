@@ -1,4 +1,4 @@
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <fieldset>
         <legend>Nova tarefa</legend>
         <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
@@ -28,6 +28,13 @@
                 <?php echo ($task['priority'] == 3) ? 'checked' : ''; ?>> Alta
             </div>
         </fieldset>
+        <label for="attachment">
+            Anexos:
+            <?php if ($is_invalid && array_key_exists('attachment', $errors)) : ?>
+                <span><?php echo $errors['attachment']; ?></span>
+            <?php endif; ?>
+                <input type="file" name="attachment[]" multiple>
+        </label>
         <label class="concluded">
             Tarefa concluída:
             <input type="checkbox" name="concluded" value="1"

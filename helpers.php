@@ -66,4 +66,41 @@
             return false;
         }
     }
+
+    function rearrange_files($name) {
+        $files = [];
+
+        for ($i = 0; $i < count($_FILES[$name]['name']); $i++) {
+            $files[$name][$i] = [
+                'name' => $_FILES[$name]['name'][$i],
+                'full_path' => $_FILES[$name]['full_path'][$i],
+                'type' => $_FILES[$name]['type'][$i],
+                'tmp_name' => $_FILES[$name]['tmp_name'][$i],
+                'error' => $_FILES[$name]['error'][$i],
+                'size' => $_FILES[$name]['size'][$i],
+            ];
+        }
+
+        return $files;
+    }
+
+    function set_attachment($file) {
+        $attachment = [
+            'name' => substr($file['name'], 0, -4),
+            'file' => $file['name'],
+        ];
+        return $attachment;
+    }
+
+    function check_attach($file) {
+        $pattern = '/^.+(\.pdf|\.zip)$/';
+        $match = preg_match($pattern, $file['name']);;
+
+        if ($match) {
+            move_uploaded_file($file['tmp_name'], "attachments/{$file['name']}");
+            return true;
+        } else {
+            return false;
+        }
+    }
 ?>

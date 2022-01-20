@@ -9,6 +9,19 @@ span {
     font-size: 0.85rem;
 }
 
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Visualização de Tarefa */
+.view {
+    border: 2px solid black;
+    min-width: 40%;
+    padding: 10px;
+    margin-right: 10%;
+}
+
 /* Formulário */
 form {
     max-width: 40%;
@@ -101,6 +114,11 @@ fieldset .concluded input {
 }
 
 /* Lista de Tarefas */
+.table {
+    margin: 0 auto 10px 50px;
+    height: fit-content;
+}
+
 table {
     margin-bottom: 10px;
 }
@@ -112,11 +130,10 @@ table th {
     text-transform: uppercase;
 }
 
-
 table td {
     padding: 10px 5px 10px 5px;
     border-bottom: 1px solid black;
-    vertical-align: baseline;
+    vertical-align: middle;
 }
 
 table td::before {
@@ -131,3 +148,32 @@ table td::before {
     margin-top: 2.5px;
 }
 
+table td.options::before {
+    content: '';
+    display: none;
+}
+
+table td.options {
+    display: grid;
+
+    grid-template: "a a"
+                   "b c";
+    gap: 5%;
+}
+
+table td.options {
+    padding: 10px;
+    text-align: center;
+}
+
+table td.options .edit {
+    grid-area: a;
+}
+
+table td.options .delete{
+    grid-area: b;
+}
+
+table td.options .duplicate  {
+    grid-area: c;
+}
