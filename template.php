@@ -23,8 +23,9 @@
                             <ul>
                                 <?php foreach ($attachments as $attachment) : ?>
                                     <li><?php echo $attachment['name']; ?>
-                                        <a href="attachments\<?php echo $attachment['file'] ?>">Baixar</a>
                                     </li>
+                                    <a href="attachments\<?php echo $attachment['file']; ?>">Baixar</a>
+                                    <a href="delete.php?attachment=true&id=<?php echo $attachment['id']; ?>">Deletar</a>
                                 <?php endforeach; ?>
                             </ul>
                         </div>

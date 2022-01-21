@@ -67,7 +67,7 @@
             mysqli_query($conn, "DELETE FROM attachments WHERE id = {$attach['id']}");
             unlink("attachments/{$attach['file']}");
         };
-
+        
         $query = "DELETE FROM tasks WHERE id = {$id}";
         mysqli_query($conn, $query);
     }
@@ -84,6 +84,14 @@
             ";
             
         mysqli_query($conn, $query);
+    }
+
+    function delete_attachment($conn, $id) {
+        $query = "SELECT * FROM attachments WHERE id = {$id}";
+        $attachment = mysqli_fetch_assoc(mysqli_query($conn, $query)); 
+
+        mysqli_query($conn, "DELETE FROM attachments WHERE id = {$id}");
+        unlink("attachments/{$attachment['file']}");
     }
 
     function find_attachments($conn, $id) {

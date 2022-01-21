@@ -16,8 +16,33 @@
             $errors['name'] = 'O título da tarefa é obrigatório!';
         };
 
+        // Upload de anexos
+        if (array_key_exists('attachment', $_FILES)) {
+            $files = [];
+            $files = rearrange_files('attachment');
+
+            foreach ($files['attachment'] as $file) {
+                if (check_attach($file)) {
+                    $attachment = set_attachment($file);
+                    $attachments[] = $attachment;
+                } else {
+                    $is_invalid = true;
+                    $errors['attachment'] = "O formato do arquivo não é permitido! \n (Somente .pdf ou .zip)";
+                    break;
+                }
+            }
+        }
+
         if (! $is_invalid) {
             edit_task($connection, $task);
+
+            if (isset($attachment)) {
+                foreach($attachments as $attachment) {
+                    $attachment['task_id'] = $_GET['id'];
+                    save_attachment($connection, $attachment);
+                }
+            }
+
             header('Location: tasks.php');
             die();
         }
