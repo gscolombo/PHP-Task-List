@@ -1,4 +1,5 @@
 <?php
+    require "config.php";
     require "db.php";
 
     $task = find_task($connection, $_POST['id']);

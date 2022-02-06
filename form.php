@@ -28,7 +28,7 @@
                 <?php echo ($task['priority'] == 3) ? 'checked' : ''; ?>> Alta
             </div>
         </fieldset>
-        <label for="attachment">
+        <label class="attachment">
             Anexos:
             <?php if ($is_invalid && array_key_exists('attachment', $errors)) : ?>
                 <span><?php echo $errors['attachment']; ?></span>
@@ -39,6 +39,10 @@
             Tarefa concluída:
             <input type="checkbox" name="concluded" value="1"
             <?php echo ($task['concluded'] == 1) ? 'checked' : ''; ?>>
+        </label>
+        <label class="reminder">
+            Incluir lembrete:
+            <input type="checkbox" name="reminder" value="1">
         </label>
         <input type="submit" value="<?php echo ($task['id'] > 0) ? 'Atualizar' : 'Cadastrar' ?>">
         <?php if (!$show_tasks) : ?>

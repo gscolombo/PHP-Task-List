@@ -103,4 +103,67 @@
             return false;
         }
     }
+
+    // Carregamento do PHPMailer
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
+    require "libs\PHPMailer\src\PHPMailer.php";
+    require "libs\PHPMailer\src\Exception.php";
+    require "libs\PHPMailer\src\SMTP.php";
+    
+    function send_mail($task, $attachments = []) {
+        $email = new PHPMailer();
+
+        // Autenticação
+        $email -> isSMTP();
+        $email -> Host = "smtp.gmail.com";
+        $email -> Port = 587;
+        $email -> SMTPSecure = 'tls';
+        $email -> SMTPAuth = true;
+        $email -> Username = EMAIL_SENDER;
+        $email -> Password = EMAIL_SENDER_PASSWORD;
+        $email -> setFrom(EMAIL_SENDER, "Sistema de Notificação");
+
+        // E-mail do destinatário
+        $email -> addAddress(EMAIL_RECIPIENT);
+
+        // Assunto do e-mail
+        $email -> Subject = "Lembrete de tarefa: {$task['name']}";
+
+        // Corpo do e-mail
+        $body = set_email_body($task, $attachments);
+        $email -> msgHTML($body);
+
+        // Anexos, quando necessário
+        foreach ($attachments as $attachment) {
+            $email -> addAttachment("attachments/{$attachment['file']}");
+        }
+        // Envio do e-mail
+        if (! $email -> send()) {
+            $errorMessage = "Falha no envio de e-mail: {$email -> ErrorInfo}";
+            record_log($errorMessage);
+        }
+    }
+    
+    function set_email_body($task, $attachments) {
+        // Iniciar buffer de saída e incluir template
+        ob_start();
+        include "template_email.php";
+
+        // Guardar conteúdo do buffer
+        $body = ob_get_contents();
+
+        // Limpar e parar buffer
+        ob_end_clean();
+
+        return $body;
+    }
+
+    function record_log($message) {
+        $datetime = date("Y-m-d H:i:s");
+        $log = "{$datetime} {$message}\n";
+        
+        file_put_contents("messages.log", $log, FILE_APPEND);
+    }
 ?>

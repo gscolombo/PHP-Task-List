@@ -110,7 +110,12 @@ fieldset .concluded {
 
 fieldset .concluded input {
     min-width: fit-content;
-    margin-left: 20px;
+    margin: 0 0 0 20px;
+}
+
+fieldset .reminder input {
+    min-width: fit-content;
+    margin: 0 0 0 20px;
 }
 
 /* Lista de Tarefas */

@@ -1,4 +1,5 @@
 <?php 
+    require "config.php";
     require 'db.php';
     require 'helpers.php';
 
@@ -17,7 +18,14 @@
         };
 
         // Upload de anexos
-        if (array_key_exists('attachment', $_FILES)) {
+        $has_file = false;
+        foreach ($_FILES['attachment']['name'] as $file) {
+            if ($file !== "") {
+                $has_file = true;
+            }
+        }
+
+        if ($has_file) {
             $files = [];
             $files = rearrange_files('attachment');
 
@@ -35,8 +43,13 @@
 
         if (! $is_invalid) {
             save_task($connection, $task);
+            $has_attachments = isset($attachments) && is_array($attachments);
 
-            if (isset($attachment)) {
+            if (array_key_exists('reminder', $_POST) && $_POST['reminder'] == 1) {
+                $has_attachments ? send_mail($task, $attachments) : send_mail($task);
+            }
+
+            if ($has_attachments) {
                 $id = mysqli_insert_id($connection);
                 foreach($attachments as $attachment) {
                     $attachment['task_id'] = $id;

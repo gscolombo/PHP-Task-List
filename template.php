@@ -9,7 +9,7 @@
             <?php require "form.php"; ?>
 
             <?php if ($show_tasks) : ?>
-                <?php require "tasksTable.php"; ?>
+                <?php require "tasks_table.php"; ?>
             <?php else: ?>
                 <section class="view">
                     <h2><?php echo $task['name']; ?></h2>
