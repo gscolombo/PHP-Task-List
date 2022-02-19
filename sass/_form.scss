@@ -1,0 +1,105 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @include mq("small") {
+        min-width: 100%;
+        padding: 0 20px;
+    }
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 0 10px 10px 10px;
+        label {
+            @include typo(2, 18, 300);
+            margin: 5px 0;
+        }
+        input, textarea {
+            border-radius: 2.5px;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            appearance: none;
+            display: none;
+        }
+        .form-title, .submit-button{
+            @include typo(2, 24);
+            padding: 3px 10px;
+            background-color: $white_dark;
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .submit-button{
+            @include typo(2, 18, 600);
+            transition: all 0.25s;
+            &:hover{
+                background-color: $white_main;
+            }
+        }
+        textarea {
+            min-height: 70px;
+            resize: none;
+        }
+        .deadline-and-priority {
+            display: flex;
+            justify-content: space-between;
+        }
+        .deadline-box, .priority-box {
+            display: flex;
+            flex-direction: column;
+            min-width: 45%;
+        }
+        .deadline-box input {
+            @include typo(2, 12);
+        }
+        .priority-box .priority-options {
+            display: flex;
+            justify-content: space-evenly;
+            border: 1px solid black;
+            border-radius: 2.5px;
+            input {
+                margin: 0;
+                &:checked+label {
+                    @include typo(2, 12);
+                    opacity: 1;
+                }
+            }
+            label {
+                transition: all 0.2s;
+                @include typo(2, 11);
+                opacity: 0.75;
+            }
+        }
+        .concluded-and-reminder{
+            display: flex;
+            justify-content: space-between;
+            .concluded, .reminder {
+                @include typo(2, 14);
+                padding: 5px 16px;
+                border: 1px solid black;
+                border-radius: 5px;
+                box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+                transition: all .1s;
+            }
+            input:checked+label {
+                background-color: $white_dark;
+                color: $white_light;
+            }
+        }
+        .attachment {
+            @include typo(2, 14);
+            padding: 5px 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+            transition: all .1s;
+            max-width: fit-content;
+            &:hover {
+                background-color: $white_dark;
+                color: $white_light;
+            }
+        }
+    }
+}

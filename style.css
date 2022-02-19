@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+img {
+    display: block;
+    max-width: 100%;
+}
+
 span {
     color: red;
     font-size: 0.85rem;

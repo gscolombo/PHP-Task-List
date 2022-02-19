@@ -1,10 +1,12 @@
 <html>
     <head>
         <title>Gerenciador de Tarefas</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
     </head>
     <body>
-        <h1>Gerenciador de Tarefas</h1>
+        <h1 class="title">Gerenciador de Tarefas</h1>
         <div class="container">
             <?php require "form.php"; ?>
 
@@ -33,6 +35,6 @@
                 </section>
             <?php endif; ?>
         </div>
-        
+        <script type="module" src="./js/script.js"></script>
     </body>
 </html>

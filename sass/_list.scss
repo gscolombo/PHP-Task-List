@@ -1,0 +1,110 @@
+.list-container {
+    display: flex;
+    min-width: 100vw;
+    flex-direction: column;
+    padding: 0 20px;
+    .legend {
+        display: flex;
+        align-items: center;
+        margin: 0 auto 10px auto;
+        span {
+            margin-right: 8px;
+            @include typo(2, 14);
+        }
+        .lp rect{
+            fill: $low-priority;
+        }
+        .mp rect{
+            fill: $medium-priority;
+        }
+        .hp rect{
+            fill: $high-priority;
+        }
+    }
+    .eraseAll {
+        @include typo(2, 14);
+        max-width: fit-content;
+        padding: 3px 5px;
+        background-color: $white_light;
+        text-decoration: none;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+}
+
+.task {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: hidden;
+    &.lp {
+        background-color: $low-priority;
+    }
+    &.mp {
+        background-color: $medium-priority;
+    }
+    &.hp {
+        background-color: $high-priority;
+    }
+    .task-title{
+        @include typo(2, 18);
+        color: $white_light;
+        margin-bottom: 5px;
+    }
+    .details {
+        display: block;
+        @include typo(2, 11);
+        color: $white_light;
+        transition: all 0.2s;
+        p {
+            margin-bottom: 5px;
+        }
+        .attachments {
+            margin-top: -10px;
+        }
+    }
+    .details.unshow {
+        display: none;
+    }
+}
+.options {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5px;
+    a, button {
+        @include typo(2, 11);
+        line-height: normal;
+        padding: 3px 5px;
+        background-color: $white_light;
+        text-decoration: none;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+    .disabled {
+        pointer-events: none;
+        background-color: $white_main;
+        color: $black_light;
+    }
+}
+
+.blur-rect {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    .task {
+        min-width: calc(100vw - 40px);
+        position: absolute;
+        margin: 0 20px;
+        top: 25%;
+    }
+    .show-details {
+        animation: showTask .25s ease-out forwards;
+    }
+    .unshow-details {
+        animation: hideTask .25s ease-out forwards;
+    }
+}

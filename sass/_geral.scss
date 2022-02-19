@@ -1,0 +1,149 @@
+/* Geral */
+
+// Fonte Quicksand
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Titillium+Web:wght@200;300;400;600;700&display=swap');
+
+// Fonte Barlow
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Quicksand:wght@300;400;500;600&family=Titillium+Web:wght@200;300;400;600;700&display=swap');
+
+/* Animações */
+    @keyframes showTask {
+        to {
+            clip-path: inset(0 0 0 0);
+        } from {
+            clip-path: inset(0 50% 0 50%);
+        }
+    }
+    @keyframes hideTask {
+        to {
+            clip-path: inset(0 50% 0 50%);
+        } from {
+            clip-path: inset(0 0 0 0);
+        }
+    }
+
+/*---*/
+* {
+    box-sizing: border-box;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+
+span {
+    color: red;
+    font-size: 0.85rem;
+}
+
+.title {
+    @include typo(1, 36, 500);
+    text-align: center;
+    line-height: 42px;
+    margin: 60px auto 0 auto;
+    max-width: 75%;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 100vw 100vw;
+    @include mq("small") {
+        margin: 24px 0;
+        overflow: visible;
+    }
+}
+
+.list-sign {
+    @include typo(1, 18);
+    @include sign();
+    h3{
+        padding-bottom: 2px;
+        margin-right: 7px;
+    }
+}
+
+.form-sign {
+    @include typo(1, 18);
+    @include sign();
+    h3{
+        padding-bottom: 2px;
+        margin-left: 7px;
+    }
+    img {
+        transform: rotate(180deg);
+        z-index: 0;
+    }
+}
+
+@include mq("medium&large") {
+    .list-sign, .form-sing {
+        display: none;
+    }
+}
+
+// Lista de anexos
+.attachments{
+    margin-top: 10px;
+    overflow: visible;
+    input {
+        opacity: 0;
+        height: 0;
+        width: 0;
+    }
+    .file-list-title{
+        @include typo(2, 14);
+        background-color: $white_light;
+        max-width: fit-content;
+        padding: 3px 5px;
+        border: 1px solid black;
+        border-radius: 5px;
+        position: relative;
+        left: 7px;
+        top: 0.875em;
+    }
+    
+    .file-list {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: $white_main;
+        min-height: 50px;
+        max-height: 100px;
+        max-width: 100%;
+        list-style: inside;
+        overflow-y: scroll;
+        z-index: 1;
+        padding: 20px 5px 5px 5px;
+    
+        .file {
+            @include typo(2, 12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: $white_light;
+            min-height: 25px;
+            max-width: 80vw;
+            border-radius: 5px;
+            border: 1px solid black;
+            padding: 5px 5px 5px 7px;
+            margin-bottom: 5px;
+            & p {
+                max-width: 75%;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin-bottom: 0;
+            }
+            & img {
+                transition: all .25s;
+                &:hover{
+                    transform: scale(1.2);
+                }
+            }
+        }
+    
+        p {
+            @include typo(2, 12);
+        }
+    }
+}
+

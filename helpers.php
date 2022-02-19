@@ -4,13 +4,13 @@
 
         switch ($n) {
             case 1:
-                $priority = 'Baixa';
+                $priority = 'lp';
                 break;
             case 2: 
-                $priority = 'Média';
+                $priority = 'mp';
                 break;
             case 3:
-                $priority = 'Alta';
+                $priority = 'hp';
                 break;            
         }
 

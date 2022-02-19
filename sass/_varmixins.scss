@@ -1,0 +1,63 @@
+// Cores
+$white_main: #e0e0e0;
+$white_light: #fff;
+$white_dark: #aeaeae;
+
+$black_main: #212121;
+$black_light: #484848;
+$black_dark: #000;
+
+$low-priority: #4F5B62;
+$medium-priority: #263238;
+$high-priority: #102027;
+
+// Tipografia
+@mixin typo($type, $size, $weight: 400, $mode: "white" ) {
+    @if ($type == 1) {
+        font-family: "Barlow", sans-serif;
+    } @else if ($type == 2) {
+        font-family: "Quicksand", sans-serif;
+    }
+    font-size: $size / 16 + rem;
+    font-weight: $weight;
+    @if ($mode == "black") {
+        color: $white_light;
+    } @else if ($mode == "white") {
+        color: $black_dark;
+    }  
+}
+
+// Tamanhos de tela
+$small: 400px;
+$medium: 760px;
+$large: 1200px;
+
+@mixin  mq($device) {
+    @if ($device == "large") {
+        @media screen and (min-width: #{$large}) {
+            @content;
+        }
+    } @else if ($device == "medium") {
+        @media screen and (min-width: #{$medium}) and (max-width: #{$large - 1}) {
+            @content;
+        }
+    } @else if ($device == "small") {
+        @media screen and (max-width: #{$medium - 1}) {
+            @content;
+        }
+    } @else if ($device == "medium&large") {
+        @media screen and (min-width: #{$medium}) {
+            @content;
+        }
+    }
+}
+
+// Utilidades
+@mixin sign {
+    @include typo(1, 18);
+    text-align: center;
+    margin: 24px auto 0 auto;
+    max-width: fit-content;
+    display: flex;
+    align-items: center;
+}

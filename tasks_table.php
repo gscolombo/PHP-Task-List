@@ -1,34 +1,73 @@
-<div class="table">
-    <table>
-        <tr>
-            <th>Tarefa</th>
-            <th>Descrição</th>
-            <th>Prazo</th>
-            <th>Prioridade</th>
-            <th>Concluída?</th>
-            <th>Opções</th>
-        </tr>
-        <?php 
-            foreach ($task_list as $task) :
-        ?>
-            
-            <tr>
-                <td><?php echo $task['name']; ?></td>
-                <td><?php echo $task['description']; ?></td>
-                <td><?php echo set_date($task['deadline']); ?></td>
-                <td><?php echo set_priority($task['priority']); ?></td>
-                <td><?php echo set_concluded_state($task['concluded']); ?></td>
-                <td class="options">
-                    <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Visualizar e Editar</a>
+<div class="list-container">
+    <div class="legend">
+        <span>Prioridade:</span>
+        <div class="grade">
+            <svg class="lp" width="10px" height="10px" xlmns="http://www.w3.org/2000/svg">
+                <rect width="10px" height="10px">
+            </svg>
+            <span>Baixa</span>
+        </div>
+        <div class="grade">
+            <svg class="mp" width="10px" height="10px" xlmns="http://www.w3.org/2000/svg">
+                <rect width="10px" height="10px">
+            </svg>
+            <span>Média</span>
+        </div>
+        <div class="grade">
+            <svg class="hp" width="10px" height="10px" xlmns="http://www.w3.org/2000/svg">
+                <rect width="10px" height="10px">
+            </svg>
+            <span>Alta</span>
+        </div>
+    </div>
+    <div class="list">
+        <?php foreach($task_list as $task) : ?>
+            <div class="task <?php echo set_priority($task['priority']) ?>">
+                <h2 class="task-title"><?php echo $task['name']; ?></h2>
+                <div class="details unshow">
+                    <p class="deadline">Prazo: <?php echo set_date($task['deadline']); ?></p>
+                    <p class="description"><?php echo $task['description']; ?></p>
+                    <?php 
+                        $attachments = find_attachments($connection, $task['id']);
+                        if (count($attachments) > 0) : 
+                    ?>
+                    <div class="attachments">
+                        <h2 class="file-list-title">Anexos</h2>
+                        <ul class="file-list">
+                            <?php 
+                                foreach($attachments as $attachment) :
+                            ?>
+                            <li class="file">
+                                <p><?php echo $attachment['name']; ?></p>
+                                <a href="attachments/<?php echo $attachment['file'] ?>">
+                                    <img src="./img/downloadBtn.svg" alt="Botão de download">
+                                </a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <div class="options">
+                    <a class="conclude <?php echo $task['concluded'] ? "disabled" : ""; ?>" href="">
+                        <?php 
+                            echo $task['concluded'] ? "Concluída" : "Concluir";
+                        ?>
+                    </a>
+                    <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Editar</a>
                     <a class="delete" href="delete.php?id=<?php echo $task['id'] ?>">Remover</a>
                     <a class="duplicate" href="duplicate.php?id=<?php echo $task['id'] ?>">Duplicar</a>
-                </td>
-            </tr>
-
+                    <button type="button">Ver detalhes</button>
+                </div>
+            </div>
         <?php endforeach; ?>
-    </table>
+    </div>
 
     <?php if ($show_tasks && count($task_list) > 0) : ?>
         <a class="eraseAll" href="delete.php?deleteAll=true">Apagar tudo</a>
     <?php endif; ?>
+    <div class="form-sign">
+        <img src="./img/arrows.svg">
+        <h3>Formulário</h3>
+    </div>
 </div>
