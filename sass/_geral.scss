@@ -103,7 +103,8 @@ input, textarea {
 
 @include mq("large") {
     .list-sign, 
-    .form-sign {
+    .form-sign,
+    .arrow-down {
         display: none;
     }
 }

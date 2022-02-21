@@ -67,6 +67,9 @@
     img {
         animation: shake 8s infinite alternate ease-in-out;
     }
+    @include mq("large") {
+        display: none;
+    }
 }
 
 .task {
