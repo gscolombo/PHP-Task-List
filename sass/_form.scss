@@ -36,6 +36,7 @@ form {
         .submit-button{
             @include typo(2, 18, 600);
             transition: all 0.25s;
+            cursor: pointer;
             &:hover{
                 background-color: $white_main;
             }
@@ -55,6 +56,7 @@ form {
         }
         .deadline-box input {
             @include typo(2, 12);
+            cursor: pointer;
         }
         .priority-box .priority-options {
             display: flex;
@@ -72,6 +74,7 @@ form {
                 transition: all 0.2s;
                 @include typo(2, 11);
                 opacity: 0.75;
+                cursor: pointer;
             }
         }
         .concluded-and-reminder{
@@ -84,10 +87,15 @@ form {
                 border-radius: 5px;
                 box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
                 transition: all .1s;
+                cursor: pointer;
+                user-select: none;
             }
             input:checked+label {
                 background-color: $white_dark;
                 color: $white_light;
+            }
+            @include mq("large") {
+                gap: 10px;
             }
         }
         .attachment {
@@ -98,6 +106,8 @@ form {
             box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
             transition: all .1s;
             max-width: fit-content;
+            user-select: none;
+            cursor: pointer;
             &:hover {
                 background-color: $white_dark;
                 color: $white_light;

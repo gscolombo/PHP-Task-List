@@ -38,7 +38,7 @@
                 <input type="file" id="attachment" name="attachment[]" multiple>
             
             <h2 class="file-list-title">Anexos</h2>
-            <ul class="file-list">
+            <ul class="file-list custom-scrollbar">
             </ul>
         </div>
         

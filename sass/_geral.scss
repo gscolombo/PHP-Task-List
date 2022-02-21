@@ -61,13 +61,17 @@ span {
 }
 
 .container {
-    display: flex;
-    align-items: center;
-    @include mq("small&medium") {
-        display: grid;
-        grid-template-columns: 100vw 100vw;
-        margin: 24px 0;
-        overflow: visible;
+    display: grid;
+    grid-template-columns: 100vw 100vw;
+    margin: 24px 0;
+    overflow: visible;
+    @include mq("large") {
+        display: flex;
+        align-items: flex-start;
+        margin: 20vh 0;
+        justify-content: center;
+        gap: 40px;
+        transform: scale(1.5)
     }
 }
 
@@ -98,7 +102,8 @@ input, textarea {
 }
 
 @include mq("large") {
-    .list-sign, .form-sing {
+    .list-sign, 
+    .form-sign {
         display: none;
     }
 }
@@ -137,6 +142,25 @@ input, textarea {
         overflow-y: scroll;
         z-index: 1;
         padding: 20px 5px 5px 5px;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        @include mq("large") {
+            &.custom-scrollbar {
+                &::-webkit-scrollbar {
+                    display: block;
+                    width: 20px;
+                }
+                &::-webkit-scrollbar-track {
+                    background-color: $white_main;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: $black_light;
+                    border: 5px solid $white_main;
+                    border-radius: 10px;
+                }
+            }
+        }
     
         .file {
             @include typo(2, 12);

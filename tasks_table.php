@@ -25,7 +25,11 @@
             <div id=<?php echo $task['id']; ?> class="task <?php echo set_priority($task['priority']) ?>">
                 <h2 class="task-title"><?php echo $task['name']; ?></h2>
                 <div class="details unshow">
-                    <p class="deadline">Prazo: <?php echo set_date($task['deadline']); ?></p>
+                    <p class="deadline">
+                        <?php echo $task['deadline'] !== "" && $task['deadline'] !== "0000-00-00" ?
+                            "Prazo: " . set_date($task['deadline']) : "";
+                        ?>
+                    </p>
                     <p class="description"><?php echo $task['description']; ?></p>
                     <?php 
                         $attachments = find_attachments($connection, $task['id']);
@@ -33,7 +37,7 @@
                     ?>
                     <div class="attachments">
                         <h2 class="file-list-title">Anexos</h2>
-                        <ul class="file-list">
+                        <ul class="file-list <?php echo count($attachments) > 3 ? "custom-scrollbar" : ""; ?>">
                             <?php 
                                 foreach($attachments as $attachment) :
                             ?>
