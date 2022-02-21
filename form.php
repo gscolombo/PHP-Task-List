@@ -2,7 +2,7 @@
     <fieldset>
         <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
         <legend class="form-title">Nova tarefa</legend>
-        <label class="task">*Tarefa:</label>
+        <label class="task-name">*Tarefa:</label>
         <?php if ($is_invalid && array_key_exists('name', $errors)) : ?>
             <span><?php echo $errors['name']; ?></span>
         <?php endif; ?>

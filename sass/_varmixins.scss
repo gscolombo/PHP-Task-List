@@ -49,6 +49,10 @@ $large: 1200px;
         @media screen and (min-width: #{$medium}) {
             @content;
         }
+    } @else if ($device == "small&medium") {
+        @media screen and (max-width: #{$large - 1}) {
+            @content;
+        }
     }
 }
 

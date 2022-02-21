@@ -22,7 +22,7 @@
     </div>
     <div class="list">
         <?php foreach($task_list as $task) : ?>
-            <div class="task <?php echo set_priority($task['priority']) ?>">
+            <div id=<?php echo $task['id']; ?> class="task <?php echo set_priority($task['priority']) ?>">
                 <h2 class="task-title"><?php echo $task['name']; ?></h2>
                 <div class="details unshow">
                     <p class="deadline">Prazo: <?php echo set_date($task['deadline']); ?></p>
@@ -49,19 +49,24 @@
                     <?php endif; ?>
                 </div>
                 <div class="options">
-                    <a class="conclude <?php echo $task['concluded'] ? "disabled" : ""; ?>" href="">
+                    <button type="button" class="conclude <?php echo $task['concluded'] ? "disabled" : ""; ?>">
                         <?php 
                             echo $task['concluded'] ? "Concluída" : "Concluir";
                         ?>
-                    </a>
+                    </button>
                     <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Editar</a>
                     <a class="delete" href="delete.php?id=<?php echo $task['id'] ?>">Remover</a>
                     <a class="duplicate" href="duplicate.php?id=<?php echo $task['id'] ?>">Duplicar</a>
-                    <button type="button">Ver detalhes</button>
+                    <button type="button" class="details-btn">Ver detalhes</button>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+    <?php if (count($task_list) > 5) : ?>
+        <div class="arrow-down">
+            <img src="./img/downArrow.svg">
+        </div>
+    <?php endif; ?>
 
     <?php if ($show_tasks && count($task_list) > 0) : ?>
         <a class="eraseAll" href="delete.php?deleteAll=true">Apagar tudo</a>

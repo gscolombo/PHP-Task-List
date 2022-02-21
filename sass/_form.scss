@@ -2,9 +2,11 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    @include mq("small") {
-        min-width: 100%;
-        padding: 0 20px;
+    padding: 0 20px;
+    @include mq("medium") {
+        transform: scale(1.5);
+        min-width: 60vw;
+        margin: 25% auto;
     }
     fieldset {
         display: flex;

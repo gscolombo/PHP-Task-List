@@ -6,7 +6,7 @@ export default function showDetails() {
     function handleClick(e) {
         const btn = e.currentTarget;
         const task = btn.parentElement.parentElement.cloneNode(true);
-        const btnClone = task.querySelector("button");
+        const btnClone = task.querySelector("button.details-btn");
 
         task.classList.add("show-details");
         task.querySelector(".details").classList.remove("unshow");
@@ -27,7 +27,8 @@ export default function showDetails() {
     }
 
     tasks.forEach( task => {
-        const btn = task.querySelector(".options button");
+        const btn = task.querySelector(".options button.details-btn");
         btn.addEventListener("click", handleClick);
     })
+
 }

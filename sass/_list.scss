@@ -1,8 +1,17 @@
 .list-container {
     display: flex;
-    min-width: 100vw;
     flex-direction: column;
     padding: 0 20px;
+    @include mq("medium") {
+        transform: scale(1.5);
+        min-width: 60vw;
+        margin: 25% auto;
+    }
+    .list {
+        max-height: 380px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
     .legend {
         display: flex;
         align-items: center;
@@ -29,6 +38,16 @@
         text-decoration: none;
         border: 1px solid black;
         border-radius: 5px;
+    }
+}
+
+.arrow-down {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    max-height: 20px;
+    img {
+        animation: shake 8s infinite alternate ease-in-out;
     }
 }
 
@@ -95,11 +114,15 @@
     top: 0;
     background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .task {
-        min-width: calc(100vw - 40px);
-        position: absolute;
-        margin: 0 20px;
-        top: 25%;
+        width: calc(100vw - 40px);
+        @include mq("medium") {
+            transform: scale(1.5);
+            max-width: 55vw;
+        }
     }
     .show-details {
         animation: showTask .25s ease-out forwards;
