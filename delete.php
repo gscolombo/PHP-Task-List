@@ -16,7 +16,6 @@
         } else {
             delete_task($connection, $_GET['id']);
         }
-        header('Location: tasks.php');
     } else {
         $query = "SELECT task_id FROM attachments WHERE id = {$_GET['id']}";
         $query_result = mysqli_query($connection, $query);
