@@ -23,7 +23,10 @@
     <div class="list">
         <?php foreach($task_list as $task) : ?>
             <div id=<?php echo $task['id']; ?> class="task <?php echo set_priority($task['priority']) ?>">
-                <h2 class="task-title"><?php echo $task['name']; ?></h2>
+                <div class="task-header">
+                    <h2 class="task-title"><?php echo $task['name']; ?></h2>
+                    <img class="<?php echo $task['concluded'] ? "" : "unshow" ?>" src="./img/conclusionSym.svg">
+                </div>
                 <div class="details unshow">
                     <p class="deadline">
                         <?php echo $task['deadline'] !== "" && $task['deadline'] !== "0000-00-00" ?
@@ -59,7 +62,7 @@
                         ?>
                     </button>
                     <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Editar</a>
-                    <a class="delete" href="delete.php?id=<?php echo $task['id'] ?>">Remover</a>
+                    <button class="delete">Remover</button>
                     <a class="duplicate" href="duplicate.php?id=<?php echo $task['id'] ?>">Duplicar</a>
                     <button type="button" class="details-btn">Ver detalhes</button>
                 </div>
