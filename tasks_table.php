@@ -63,7 +63,7 @@
                     </button>
                     <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Editar</a>
                     <button class="delete">Remover</button>
-                    <a class="duplicate" href="duplicate.php?id=<?php echo $task['id'] ?>">Duplicar</a>
+                    <button class="duplicate">Duplicar</button>
                     <button type="button" class="details-btn">Ver detalhes</button>
                 </div>
             </div>

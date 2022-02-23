@@ -2,9 +2,8 @@
     require "config.php";
     require "db.php";
 
-    $task = find_task($connection, $_POST['id']);
-
+    $task = find_task($connection, $_GET['id']);
     save_task($connection, $task);
-    header('Location: tasks.php');
-    die();
+    
+    echo json_encode(['id' => mysqli_insert_id($connection)]);
 ?>
