@@ -79,16 +79,8 @@
     padding: 10px;
     overflow: hidden;
     max-height: 80px;
-    &.lp {
-        background-color: $low-priority;
-    }
-    &.mp {
-        background-color: $medium-priority;
-    }
-    &.hp {
-        background-color: $high-priority;
-    }
-    .task-title{
+    @include setPriorityBG;
+    .task-title {
         @include typo(2, 18);
         color: $white_light;
         margin-bottom: 5px;
@@ -170,9 +162,9 @@
         }
     }
     .show-details {
-        animation: showTask .25s ease-out forwards;
+        animation: show .25s ease-out forwards;
     }
     .unshow-details {
-        animation: hideTask .25s ease-out forwards;
+        animation: hide .25s ease-out forwards;
     }
 }

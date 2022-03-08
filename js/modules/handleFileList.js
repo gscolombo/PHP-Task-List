@@ -1,8 +1,8 @@
-export default function handleFileList() {    
-    const input = document.querySelector("input[type='file']");
-    const fileList = document.querySelector(".file-list");
-    
-    input.addEventListener("change", updateList);
+export default function handleFileList(element) {    
+    const input = document.querySelector(".container input[type='file']");
+    const fileList = document.querySelector(".container .file-list");
+
+    input.addEventListener("input", updateList);
     
     function removeFile(list, file) {
         let newFileList = new DataTransfer();
@@ -16,9 +16,9 @@ export default function handleFileList() {
     }
     
     function updateList() {
-        let files = input.files;
+        const files = input.files;
         const fileElements = Array.from(fileList.children); 
-    
+
         if (fileElements.length > 0) {
             fileElements.forEach( child => {
                 child.remove();
@@ -28,11 +28,14 @@ export default function handleFileList() {
         if (files.length > 0) {
             for (const file of files) {
                 const li = document.createElement("li");
-                li.classList.add("file");
-                li.innerText = file.name;
-    
+                const p = document.createElement("p");
                 const img = document.createElement("img");
+
+                li.classList.add("file");
+                p.innerText = file.name;    
                 img.src = "./img/removeBtn.svg";
+
+                li.appendChild(p);
                 li.appendChild(img);
                 fileList.appendChild(li);
     

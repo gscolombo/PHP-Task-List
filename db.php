@@ -84,7 +84,7 @@
     function delete_attachment($conn, $id) {
         $query = "SELECT * FROM attachments WHERE id = {$id}";
         $attachment = mysqli_fetch_assoc(mysqli_query($conn, $query)); 
-
+        
         mysqli_query($conn, "DELETE FROM attachments WHERE id = {$id}");
         unlink("attachments/{$attachment['file']}");
     }

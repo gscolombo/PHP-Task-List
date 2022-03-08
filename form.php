@@ -1,18 +1,18 @@
 <form method="post" enctype="multipart/form-data">
     <fieldset>
-        <input type="hidden" name="id" value="<?php echo $task['id']; ?>">
+        <input id="id" type="hidden" name="id" value="<?php echo $task['id']; ?>">
         <legend class="form-title">Nova tarefa</legend>
         <label class="task-name">*Tarefa:</label>
         <?php if ($is_invalid && array_key_exists('name', $errors)) : ?>
             <span><?php echo $errors['name']; ?></span>
         <?php endif; ?>
-            <input type="text" name="name" value="<?php echo $task['name']; ?>">
+            <input id="name" type="text" name="name" value="<?php echo $task['name']; ?>">
         <label class="description">Descrição:</label>
         <textarea name="description"><?php echo $task['description']; ?></textarea>
         <div class="deadline-and-priority">
             <div class="deadline-box">
                 <label class="deadline">Prazo:</label>
-                <input type="date" name="deadline" value="<?php echo $task['deadline']; ?>">
+                <input id="deadline" type="date" name="deadline" value="<?php echo $task['deadline']; ?>">
             </div>
             <div class="priority-box">
             <label class="priority">Prioridade:</label>

@@ -1,4 +1,5 @@
-import showDetails from "./showTaskDetails.js";
+import editTask from "./editTask.js";
+import duplicateTask from "./duplicateTask.js";
 
 export default function databaseFetch(e, type) {
     const btn = e.currentTarget;
@@ -15,6 +16,10 @@ export default function databaseFetch(e, type) {
             break;
         case "duplicate":
             url = window.location.origin + `/TaskList/duplicate.php?id=${id}`;
+            break;
+        case "edit":
+            url = window.location.origin + `/TaskList/edit.php?id=${id}`;
+            break;
     }
 
     if (url !== "") {
@@ -31,35 +36,16 @@ export default function databaseFetch(e, type) {
                         task.remove();
                         break;
                     case "duplicate":
+                    case "edit":
                         return res.json();
                 }
             }
         })
         .then( json => {
             if (type === "duplicate") {
-                const clone = task.cloneNode(true);
-                clone.setAttribute("id", json.id);
-    
-                const options = Array.from(clone.querySelectorAll(".options button"));
-                options.forEach( (option, i) => {
-                    option.addEventListener("click", e => {
-                        switch (i) {
-                            case 0:
-                                databaseFetch(e, "conclude");
-                                break;
-                            case 1:
-                                databaseFetch(e, "delete");
-                                break;
-                            case 2:
-                                databaseFetch(e, "duplicate");
-                                break;
-                            case 3:
-                                showDetails(e);
-                                break;
-                        }
-                    })
-                });
-                task.parentElement.appendChild(clone);
+                duplicateTask(task, json);
+            } else if (type === "edit") {
+                editTask(task, json);
             }
         })
     }

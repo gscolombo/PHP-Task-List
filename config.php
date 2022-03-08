@@ -9,4 +9,5 @@
     const EMAIL_SENDER = "reminderphp@gmail.com";
     const EMAIL_SENDER_PASSWORD = "p@ssw@rd";
     const EMAIL_RECIPIENT = "gabriel.souza.colombo13@gmail.com";
+    const GOOGLE_APP_PASSWORD = "ecpqsmkaippuwhed";
 ?>

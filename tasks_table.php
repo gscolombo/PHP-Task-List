@@ -44,7 +44,7 @@
                             <?php 
                                 foreach($attachments as $attachment) :
                             ?>
-                            <li class="file">
+                            <li class="file" id="<?php echo $attachment['id']?>">
                                 <p><?php echo $attachment['name']; ?></p>
                                 <a href="attachments/<?php echo $attachment['file'] ?>">
                                     <img src="./img/downloadBtn.svg" alt="Botão de download">
@@ -61,7 +61,7 @@
                             echo $task['concluded'] ? "Concluída" : "Concluir";
                         ?>
                     </button>
-                    <a class="edit" href="edit.php?id=<?php echo $task['id']; ?>">Editar</a>
+                    <button class="edit">Editar</button>
                     <button class="delete">Remover</button>
                     <button class="duplicate">Duplicar</button>
                     <button type="button" class="details-btn">Ver detalhes</button>

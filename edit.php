@@ -6,6 +6,8 @@
     $show_tasks = false;
     $is_invalid = false;
     $errors = [];
+    $response = [];
+    $attachments = [];
 
     if (has_data_task()) {
         $task = set_task();
@@ -17,12 +19,14 @@
             $errors['name'] = 'O título da tarefa é obrigatório!';
         };
 
+        $response['post'] = $task;
+        
         // Upload de anexos
-        if (array_key_exists('attachment', $_FILES)) {
+        if (array_key_exists('attachment-edit', $_FILES)) {
             $files = [];
-            $files = rearrange_files('attachment');
+            $files = rearrange_files('attachment-edit');
 
-            foreach ($files['attachment'] as $file) {
+            foreach ($files['attachment-edit'] as $file) {
                 if (check_attach($file)) {
                     $attachment = set_attachment($file);
                     $attachments[] = $attachment;
@@ -36,27 +40,40 @@
 
         if (! $is_invalid) {
             edit_task($connection, $task);
+            $has_attachments = isset($attachments) && is_array($attachments);
 
-            if (isset($attachment)) {
-                foreach($attachments as $attachment) {
-                    $attachment['task_id'] = $_GET['id'];
-                    save_attachment($connection, $attachment);
-                }
+            if (array_key_exists('reminder', $_POST) && $_POST['reminder'] == 1) {
+                $has_attachments ? send_mail($task, $attachments) : send_mail($task);
             }
 
-            header('Location: tasks.php');
-            die();
+            if ($has_attachments) {
+                foreach($attachments as $attachment) {
+                    $attachment['task_id'] = $_POST['id'];
+                    save_attachment($connection, $attachment);
+
+                    $id = mysqli_insert_id($connection);
+                    $attachment['id'] = $id;
+                    $response['files'][] = $attachment;
+                }
+            }
+            
+            $response['status'] = "success";
+        } else {
+            http_response_code(400);
+            $response['status'] = "failure";
+            $response['errors'] = $errors;
         }
+        echo json_encode($response);
     }
     
-    $task = find_task($connection, $_GET['id']);
-    $attachments = find_attachments($connection, $_GET['id']);
-
-    $task['name'] = array_key_exists('name', $_POST) ? $_POST['name'] : $task['name'];
-    $task['description'] = array_key_exists('description', $_POST) ? $_POST['description'] : $task['description'];
-    $task['deadline'] = array_key_exists('deadline', $_POST) ? $_POST['deadline'] : $task['deadline'];
-    $task['priority'] = array_key_exists('priority', $_POST) ? $_POST['priority'] : $task['priority'];
-    $task['concluded'] = array_key_exists('concluded', $_POST) ? $_POST['concluded'] : $task['concluded'];
+    if (array_key_exists("id", $_GET) && $_GET['id'] !== "") {
+        $task = find_task($connection, $_GET['id']);
+        $attachments = find_attachments($connection, $_GET['id']);
     
-    require "template.php";
+        $json = $task;
+        $json['attachments'] = $attachments;
+        echo json_encode($json);
+    }
+
+    header('Content-type: application/json; charset=UTF-8');
 ?>

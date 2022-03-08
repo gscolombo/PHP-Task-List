@@ -16,12 +16,14 @@
         } else {
             delete_task($connection, $_GET['id']);
         }
-    } else {
-        $query = "SELECT task_id FROM attachments WHERE id = {$_GET['id']}";
-        $query_result = mysqli_query($connection, $query);
-        $task_id = mysqli_fetch_column($query_result);
-        
-        delete_attachment($connection, $_GET['id']);
-        header("Location: edit.php?id={$task_id}");
+    } else {        
+        try {
+            delete_attachment($connection, $_GET['id']);
+        } catch(mysqli_sql_exception $e) {
+            echo "Erro na deleção de anexo.";
+            http_response_code(400);
+        }
+
+        // header("Location: edit.php?id={$task_id}");
     }  
 ?>

@@ -7,9 +7,22 @@ $black_main: #212121;
 $black_light: #484848;
 $black_dark: #000;
 
+// Prioridade
 $low-priority: #4F5B62;
 $medium-priority: #263238;
 $high-priority: #102027;
+
+@mixin setPriorityBG {
+    &.lp {
+        background-color: $low-priority;
+    }
+    &.mp {
+        background-color: $medium-priority;
+    }
+    &.hp {
+        background-color: $high-priority;
+    }
+}
 
 // Tipografia
 @mixin typo($type, $size, $weight: 400, $mode: "white" ) {

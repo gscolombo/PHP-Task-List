@@ -7,18 +7,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Quicksand:wght@300;400;500;600&family=Titillium+Web:wght@200;300;400;600;700&display=swap');
 
 /* Animações */
-    @keyframes showTask {
+    @keyframes show {
         to {
-            clip-path: inset(0 0 0 0);
+            clip-path: inset(-10px 0 -10px 0);
         } from {
-            clip-path: inset(0 50% 0 50%);
+            clip-path: inset(-10px 50% -10px 50%);
         }
     }
-    @keyframes hideTask {
+    @keyframes hide {
         to {
-            clip-path: inset(0 50% 0 50%);
+            clip-path: inset(-10px 50% -10px 50%);
         } from {
-            clip-path: inset(0 0 0 0);
+            clip-path: inset(-10px 0 -10px 0);
         }
     }
 
