@@ -2,8 +2,8 @@
     require "config.php";
     require "db.php";
 
-    if (! $_GET['attachment']) {
-        if ($_POST['deleteAll']) {
+    if (!array_key_exists('attachment', $_GET)) {
+        if (array_key_exists('deleteAll', $_GET)) {
             mysqli_query($connection, "DELETE FROM tasks");
             mysqli_query($connection, "DELETE FROM attachments");
     
@@ -15,6 +15,10 @@
             }    
         } else {
             delete_task($connection, $_GET['id']);
+
+            $query = "SELECT COUNT(*) FROM tasks";
+            $number_of_rows = ["rows" => mysqli_fetch_column(mysqli_query($connection, $query))];
+            echo json_encode($number_of_rows);
         }
     } else {        
         try {
@@ -23,7 +27,5 @@
             echo "Erro na deleção de anexo.";
             http_response_code(400);
         }
-
-        // header("Location: edit.php?id={$task_id}");
-    }  
+    }
 ?>

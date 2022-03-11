@@ -1,11 +1,20 @@
 .list-container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     padding: 0 20px;
     @include mq("medium") {
         transform: scale(1.5);
         min-width: 60vw;
         margin: 25% auto;
+    }
+    .wrapper {
+        padding: 10px 0;
+    }
+    .message {
+        @include typo(2, 36);
+        text-align: center;
+        margin: 25% 0;
     }
     .list {
         max-height: 450px;
@@ -28,6 +37,7 @@
     .legend {
         display: flex;
         align-items: center;
+        justify-content: center;
         margin: 0 auto 10px auto;
         span {
             margin-right: 8px;

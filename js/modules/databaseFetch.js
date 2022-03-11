@@ -1,5 +1,6 @@
 import editTask from "./editTask.js";
 import duplicateTask from "./duplicateTask.js";
+import handleTaskList from "./handleTaskList.js";
 
 export default function databaseFetch(e, type) {
     const btn = e.currentTarget;
@@ -9,16 +10,16 @@ export default function databaseFetch(e, type) {
     let url;
     switch (type) {
         case "conclude":
-            url = window.location.origin + `/TaskList/conclude.php?id=${id}`;
+            url = location.origin + `/TaskList/conclude.php?id=${id}`;
             break;
         case "delete":
-            url = window.location.origin + `/TaskList/delete.php?id=${id}`;
+            url = location.origin + `/TaskList/delete.php?id=${id}`;
             break;
         case "duplicate":
-            url = window.location.origin + `/TaskList/duplicate.php?id=${id}`;
+            url = location.origin + `/TaskList/duplicate.php?id=${id}`;
             break;
         case "edit":
-            url = window.location.origin + `/TaskList/edit.php?id=${id}`;
+            url = location.origin + `/TaskList/edit.php?id=${id}`;
             break;
     }
 
@@ -34,7 +35,7 @@ export default function databaseFetch(e, type) {
                         break;
                     case "delete" :
                         task.remove();
-                        break;
+                        return res.json();
                     case "duplicate":
                     case "edit":
                         return res.json();
@@ -42,10 +43,17 @@ export default function databaseFetch(e, type) {
             }
         })
         .then( json => {
-            if (type === "duplicate") {
-                duplicateTask(task, json);
-            } else if (type === "edit") {
-                editTask(task, json);
+            console.log(json)
+            switch (type) {
+                case "duplicate": 
+                    duplicateTask(task, json);
+                    break;
+                case "edit":
+                    editTask(task, json);
+                    break;
+                case "delete":
+                    handleTaskList(json);
+                    break;
             }
         })
     }

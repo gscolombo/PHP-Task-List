@@ -3,7 +3,7 @@
         <title>Gerenciador de Tarefas</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" type="text/css" href="./public/css/style.css">
     </head>
     <body>
         <h1 class="title">Gerenciador de Tarefas</h1>
@@ -35,6 +35,6 @@
                 </section>
             <?php endif; ?>
         </div>
-        <script type="module" src="./js/script.js"></script>
+        <script type="module" src="./public/js/script.js"></script>
     </body>
 </html>

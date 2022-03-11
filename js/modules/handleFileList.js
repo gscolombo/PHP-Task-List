@@ -1,4 +1,4 @@
-export default function handleFileList(element) {    
+export default function handleFileList() {    
     const input = document.querySelector(".container input[type='file']");
     const fileList = document.querySelector(".container .file-list");
 

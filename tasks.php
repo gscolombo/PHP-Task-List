@@ -61,8 +61,6 @@
             die();
         }
     }
-
-    $task_list = find_tasks($connection);
     
     if (!isset($task)) {
         $task = [
@@ -75,5 +73,6 @@
         ];
     }
 
+    $task_list = find_tasks($connection);
     require "template.php";
 ?>

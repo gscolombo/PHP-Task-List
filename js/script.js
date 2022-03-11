@@ -1,3 +1,4 @@
+import handleTaskList from "./modules/handleTaskList.js";
 import handleFileList from "./modules/handleFileList.js";
 import showDetails from "./modules/showTaskDetails.js";
 import mobileScroll from "./modules/mobileScroll.js";
