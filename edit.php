@@ -2,6 +2,8 @@
     require "config.php";
     require "db.php";
     require "helpers.php";
+    require 'src/Controller/task.php';
+    require 'src/Controller/attachment.php';
 
     $show_tasks = false;
     $is_invalid = false;
@@ -10,25 +12,38 @@
     $attachments = [];
 
     if (has_data_task()) {
-        $task = set_task();
+        // $task = set_task();
 
-        if (array_key_exists('name', $_POST) && $_POST['name'] != '') {
-            $task['name'] = $_POST['name'];
-        } else {
+        // if (array_key_exists('name', $_POST) && $_POST['name'] != '') {
+        //     $task['name'] = $_POST['name'];
+        // } else {
+        //     $is_invalid = true;
+        //     $errors['name'] = 'O título da tarefa é obrigatório!';
+        // };
+        if (array_key_exists('name', $_POST) && $_POST['name'] === '') {
             $is_invalid = true;
             $errors['name'] = 'O título da tarefa é obrigatório!';
         };
 
+        $task = new Task();
+        set_task($task);
+
         $response['post'] = $task;
         
         // Upload de anexos
-        if (array_key_exists('attachment-edit', $_FILES)) {
-            $files = [];
+        $has_file = false;
+        foreach ($_FILES['attachment-edit']['name'] as $file) {
+            if ($file !== "") {
+                $has_file = true;
+            }
+        }
+        
+        if ($has_file) {
             $files = rearrange_files('attachment-edit');
-
             foreach ($files['attachment-edit'] as $file) {
                 if (check_attach($file)) {
-                    $attachment = set_attachment($file);
+                    $attachment = new Attachment();
+                    set_attachment($file, $attachment);
                     $attachments[] = $attachment;
                 } else {
                     $is_invalid = true;
@@ -37,9 +52,9 @@
                 }
             }
         }
+        
 
         if (! $is_invalid) {
-            edit_task($connection, $task);
             $has_attachments = isset($attachments) && is_array($attachments);
 
             if (array_key_exists('reminder', $_POST) && $_POST['reminder'] == 1) {
@@ -47,16 +62,11 @@
             }
 
             if ($has_attachments) {
-                foreach($attachments as $attachment) {
-                    $attachment['task_id'] = $_POST['id'];
-                    save_attachment($connection, $attachment);
-
-                    $id = mysqli_insert_id($connection);
-                    $attachment['id'] = $id;
-                    $response['files'][] = $attachment;
-                }
+                $task -> setter('attachments', $attachments);
             }
             
+            $repo -> edit($task);
+            $response['files'] = $attachments;
             $response['status'] = "success";
         } else {
             http_response_code(400);
@@ -67,12 +77,8 @@
     }
     
     if (array_key_exists("id", $_GET) && $_GET['id'] !== "") {
-        $task = find_task($connection, $_GET['id']);
-        $attachments = find_attachments($connection, $_GET['id']);
-    
-        $json = $task;
-        $json['attachments'] = $attachments;
-        echo json_encode($json);
+        $task = $repo -> find($_GET['id']) -> jsonSerialize();
+        echo json_encode($task);
     }
 
     header('Content-type: application/json; charset=UTF-8');

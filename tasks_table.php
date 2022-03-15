@@ -24,20 +24,20 @@
         </div>
         <div class="list">
             <?php foreach($task_list as $task) : ?>
-                <div id=<?php echo $task['id']; ?> class="task <?php echo set_priority($task['priority']) ?>">
+                <div id=<?php echo $task -> getter('id'); ?> class="task <?php echo set_priority($task -> getter('priority')) ?>">
                     <div class="task-header">
-                        <h2 class="task-title"><?php echo $task['name']; ?></h2>
-                        <img class="<?php echo $task['concluded'] ? "" : "unshow" ?>" src="./img/conclusionSym.svg">
+                        <h2 class="task-title"><?php echo $task -> getter('name'); ?></h2>
+                        <img class="<?php echo $task -> getter('concluded') ? "" : "unshow" ?>" src="./img/conclusionSym.svg">
                     </div>
                     <div class="details unshow">
                         <p class="deadline">
-                            <?php echo $task['deadline'] !== "" && $task['deadline'] !== "0000-00-00" ?
-                                "Prazo: " . set_date($task['deadline']) : "";
+                            <?php echo $task -> getter('deadline') !== "" && $task -> getter('deadline') !== "0000-00-00" ?
+                                "Prazo: " . set_date($task -> getter('deadline')) : "";
                             ?>
                         </p>
-                        <p class="description"><?php echo $task['description']; ?></p>
+                        <p class="description"><?php echo $task -> getter('description'); ?></p>
                         <?php 
-                            $attachments = find_attachments($connection, $task['id']);
+                            $attachments = $task -> getter('attachments');
                             if (count($attachments) > 0) : 
                         ?>
                         <div class="attachments">
@@ -46,9 +46,9 @@
                                 <?php 
                                     foreach($attachments as $attachment) :
                                 ?>
-                                <li class="file" id="<?php echo $attachment['id']?>">
-                                    <p><?php echo $attachment['name']; ?></p>
-                                    <a href="attachments/<?php echo $attachment['file'] ?>">
+                                <li class="file" id="<?php echo $attachment -> getter('id')?>">
+                                    <p><?php echo $attachment -> getter('name'); ?></p>
+                                    <a href="attachments/<?php echo $attachment -> getter('file') ?>">
                                         <img src="./img/downloadBtn.svg" alt="Botão de download">
                                     </a>
                                 </li>
@@ -58,9 +58,9 @@
                         <?php endif; ?>
                     </div>
                     <div class="options">
-                        <button type="button" class="conclude <?php echo $task['concluded'] ? "disabled" : ""; ?>">
+                        <button type="button" class="conclude <?php echo $task -> getter('concluded') ? "disabled" : ""; ?>">
                             <?php 
-                                echo $task['concluded'] ? "Concluída" : "Concluir";
+                                echo $task -> getter('concluded') ? "Concluída" : "Concluir";
                             ?>
                         </button>
                         <button class="edit">Editar</button>

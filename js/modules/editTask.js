@@ -208,13 +208,6 @@ export default function editTask(task, data) {
     submitBnt.addEventListener("click", e => {
         e.preventDefault();
         const postData = new FormData(form);
-
-        for (const data of postData) {
-            if (data[0] === "attachment-edit[]" && data[1].name === "") {
-                postData.delete("attachment-edit[]");
-            }
-        }
-
         const url = location.origin + "/TaskList/edit.php";
         const params = {
             method: 'POST',

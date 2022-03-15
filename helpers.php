@@ -18,45 +18,18 @@
     }
 
     function set_date($date, $toDB = false){
-        if ($date == '' OR $date == '0000-00-00') {
-            return '';
-        }
-
-        if (!$toDB) {
-            $date_obj = DateTime::createFromFormat('Y-m-d', $date);
-            return $date_obj -> format('d/m/Y');
-        } else {
-            return $date;
-        }
-        
+        $date_obj = DateTime::createFromFormat('Y-m-d', $date);
+        return $date_obj -> format('d/m/Y');
     }
 
-    function set_concluded_state($n) {
-        if ($n) {
-            return 'Sim';
-        } else {
-            return 'Não';
-        }
-    }
-
-    function set_task() {
-        $task = [];
-
+    function set_task(Task $task) {
         foreach(array_keys($_POST) as $key) {
-            $task[$key] = $_POST[$key];
+            $task -> setter($key, $_POST[$key]);
         };
 
-        if (array_key_exists('deadline', $task)) {
-            $task['deadline'] = set_date($task['deadline'], true);
+        if (!array_key_exists('concluded', $_POST)) {
+            $task -> setter('concluded', 0);
         }
-
-        if (!array_key_exists('concluded', $task)) {
-            $task['concluded'] = 0;
-        } else {
-            $task['concluded'] = 1;
-        }
-
-        return $task;
     }
 
     function has_data_task() {
@@ -84,12 +57,21 @@
         return $files;
     }
 
-    function set_attachment($file) {
-        $attachment = [
-            'name' => substr($file['name'], 0, -4),
-            'file' => $file['name'],
-        ];
-        return $attachment;
+    function set_attachment($file, Attachment $attachment) {
+        $file_name = substr($file['name'], 0, -4);
+        $file_format = substr($file['name'], -4);
+
+        for ($i = 0, $j = 1; $i !== $j; $i++, $j++) {
+            $n = $i === 0 ? "" : "_{$i}";
+            $new_file_name = $file_name . $n . $file_format;
+
+            if (! file_exists("attachments/" . $new_file_name)) {
+                $attachment -> setter('name', $file_name . $n);
+                $attachment -> setter('file', $new_file_name);
+                move_uploaded_file($file['tmp_name'], "attachments/" . $new_file_name);
+                $i = $j;
+            }
+        }
     }
 
     function check_attach($file) {
@@ -97,7 +79,6 @@
         $match = preg_match($pattern, $file['name']);;
 
         if ($match) {
-            move_uploaded_file($file['tmp_name'], "attachments/{$file['name']}");
             return true;
         } else {
             return false;

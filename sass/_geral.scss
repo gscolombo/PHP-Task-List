@@ -43,10 +43,9 @@
     overflow: hidden;
 }
 
-
 span {
+    @include typo(2, 14);
     color: red;
-    font-size: 0.85rem;
 }
 
 .title {

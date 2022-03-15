@@ -43,7 +43,6 @@ export default function databaseFetch(e, type) {
             }
         })
         .then( json => {
-            console.log(json)
             switch (type) {
                 case "duplicate": 
                     duplicateTask(task, json);

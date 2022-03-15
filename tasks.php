@@ -2,20 +2,21 @@
     require "config.php";
     require 'db.php';
     require 'helpers.php';
+    require 'src/Controller/task.php';
+    require 'src/Controller/attachment.php';
 
     $show_tasks = true;
     $is_invalid = false;
     $errors = [];
 
     if (has_data_task()) {
-        $task = set_task();
-
-        if (array_key_exists('name', $_POST) && $_POST['name'] != '') {
-            $task['name'] = $_POST['name'];
-        } else {
+        if (array_key_exists('name', $_POST) && $_POST['name'] === '') {
             $is_invalid = true;
             $errors['name'] = 'O título da tarefa é obrigatório!';
         };
+
+        $task = new Task();
+        set_task($task);
 
         // Upload de anexos
         $has_file = false;
@@ -26,12 +27,12 @@
         }
 
         if ($has_file) {
-            $files = [];
             $files = rearrange_files('attachment');
 
             foreach ($files['attachment'] as $file) {
                 if (check_attach($file)) {
-                    $attachment = set_attachment($file);
+                    $attachment = new Attachment();
+                    set_attachment($file, $attachment);
                     $attachments[] = $attachment;
                 } else {
                     $is_invalid = true;
@@ -42,7 +43,6 @@
         }
 
         if (! $is_invalid) {
-            save_task($connection, $task);
             $has_attachments = isset($attachments) && is_array($attachments);
 
             if (array_key_exists('reminder', $_POST) && $_POST['reminder'] == 1) {
@@ -50,29 +50,14 @@
             }
 
             if ($has_attachments) {
-                $id = mysqli_insert_id($connection);
-                foreach($attachments as $attachment) {
-                    $attachment['task_id'] = $id;
-                    save_attachment($connection, $attachment);
-                }
+                $task -> setter('attachments', $attachments);
             }
-
+            $repo -> save($task);
             header('Location: tasks.php');
             die();
         }
     }
-    
-    if (!isset($task)) {
-        $task = [
-            'id' => 0,
-            'name' => array_key_exists('name', $_POST) ? $_POST['name'] : '',
-            'description' => array_key_exists('description', $_POST) ? $_POST['description'] : '',
-            'deadline' => array_key_exists('deadline', $_POST) ? $_POST['deadline'] : '',
-            'priority' => array_key_exists('priority', $_POST) ? $_POST['priority'] : '',
-            'concluded' => array_key_exists('concluded', $_POST) ? $_POST['concluded'] : '',
-        ];
-    }
 
-    $task_list = find_tasks($connection);
+    $task_list = $repo -> find();
     require "template.php";
 ?>
