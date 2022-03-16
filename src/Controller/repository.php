@@ -9,7 +9,7 @@
             return $this -> connection;
         }
 
-        private function getTask(Task $task) {
+        private function getTask(Task $task, $with_id = false) {
             $id = $task -> getter('id');
             $name = strip_tags($task -> getter('name'));
             $description = strip_tags($task -> getter('description'));
@@ -17,14 +17,24 @@
             $priority = $task -> getter('priority');
             $concluded = ($task -> getter('concluded')) ? 1 : 0;
 
-            return [
-                'id' => $id,
-                'name' => $name, 
-                'description' => $description, 
-                'deadline' => $deadline, 
-                'priority' => $priority, 
-                'concluded' => $concluded, 
-            ];
+            if ($with_id) {
+                return [
+                    'id' => $id,
+                    'name' => $name, 
+                    'description' => $description, 
+                    'deadline' => $deadline, 
+                    'priority' => $priority, 
+                    'concluded' => $concluded, 
+                ];
+            } else {
+                return [
+                    'name' => $name, 
+                    'description' => $description, 
+                    'deadline' => $deadline, 
+                    'priority' => $priority, 
+                    'concluded' => $concluded, 
+                ];
+            }
         }
 
         public function save(Task $task) {
@@ -56,7 +66,7 @@
                 WHERE id = :id";
 
             $query = $this -> connection -> prepare($sql);
-            $query -> execute($this -> getTask($task));
+            $query -> execute($this -> getTask($task, true));
             
             $attachments = $task -> getter('attachments');
             $this -> save_attachment($attachments);
@@ -72,7 +82,7 @@
 
         private function find_task(int $id) {
             $query = "SELECT * FROM tasks WHERE id = {$id}";
-            $task = $this -> connection -> query($query, PDO::FETCH_CLASS, 'Task');
+            $task = $this -> connection -> query($query, PDO::FETCH_CLASS, 'Task') -> fetch();
 
             $attachments = $this -> check_attachments($id);
             if (count($attachments) > 0) {
@@ -160,8 +170,8 @@
 
                     $data = [
                         "task_id" => $attach -> getter('task_id'),
-                        "name" => strip_tags($this -> connection -> $attach -> getter('name')),
-                        "file" => strip_tags($this -> connection -> $attach -> getter('file'))
+                        "name" => strip_tags($attach -> getter('name')),
+                        "file" => strip_tags($attach -> getter('file'))
                     ];
                     
                     $sql = "INSERT INTO attachments
@@ -169,8 +179,8 @@
                         VALUES
                         (
                             :task_id,
-                            ':name',
-                            ':file'
+                            :name,
+                            :file
                         )
                     ";
 
