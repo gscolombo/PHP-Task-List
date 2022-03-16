@@ -26,7 +26,7 @@
             <?php foreach($task_list as $task) : ?>
                 <div id=<?php echo $task -> getter('id'); ?> class="task <?php echo set_priority($task -> getter('priority')) ?>">
                     <div class="task-header">
-                        <h2 class="task-title"><?php echo $task -> getter('name'); ?></h2>
+                        <h2 class="task-title"><?php echo htmlentities($task -> getter('name')); ?></h2>
                         <img class="<?php echo $task -> getter('concluded') ? "" : "unshow" ?>" src="./img/conclusionSym.svg">
                     </div>
                     <div class="details unshow">
@@ -35,7 +35,7 @@
                                 "Prazo: " . set_date($task -> getter('deadline')) : "";
                             ?>
                         </p>
-                        <p class="description"><?php echo $task -> getter('description'); ?></p>
+                        <p class="description"><?php echo nl2br(htmlentities($task -> getter('description'))); ?></p>
                         <?php 
                             $attachments = $task -> getter('attachments');
                             if (count($attachments) > 0) : 
@@ -47,7 +47,7 @@
                                     foreach($attachments as $attachment) :
                                 ?>
                                 <li class="file" id="<?php echo $attachment -> getter('id')?>">
-                                    <p><?php echo $attachment -> getter('name'); ?></p>
+                                    <p><?php echo htmlentities($attachment -> getter('name')); ?></p>
                                     <a href="attachments/<?php echo $attachment -> getter('file') ?>">
                                         <img src="./img/downloadBtn.svg" alt="Botão de download">
                                     </a>

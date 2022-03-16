@@ -11,8 +11,8 @@
 
         private function getTask(Task $task) {
             $id = $task -> getter('id');
-            $name = $task -> getter('name');
-            $description = $task -> getter('description');
+            $name = strip_tags($this -> connection -> escape_string($task -> getter('name')));
+            $description = strip_tags($this -> connection -> escape_string($task -> getter('description')));
             $deadline = $task -> getter('deadline');
             $priority = $task -> getter('priority');
             $concluded = ($task -> getter('concluded')) ? 1 : 0;
@@ -21,7 +21,7 @@
         }
 
         public function save(Task $task) {
-            list($name, $description, $deadline, $priority, $concluded) = $this -> getTask($task);
+            list($name, $description, $deadline, $priority, $concluded) = $this -> getTask($task); 
 
             $task_query = "INSERT INTO tasks
                 (name, description, priority, deadline, concluded)
@@ -156,13 +156,16 @@
                 foreach ($attachments as $attach) {
                     $attach -> setter('task_id', $id);
 
+                    $attach_name = strip_tags($this -> connection -> escape_string($attach -> getter('name')));
+                    $attach_file = strip_tags($this -> connection -> escape_string($attach -> getter('file')));
+
                     $attach_query = "INSERT INTO attachments
                         (task_id, name, file)
                         VALUES
                         (
                             {$attach -> getter('task_id')},
-                            '{$attach -> getter('name')}',
-                            '{$attach -> getter('file')}'
+                            '{$attach_name}',
+                            '{$attach_file}'
                         )
                     ";
 
