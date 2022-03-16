@@ -1,7 +1,7 @@
 <?php
     class Repository {
-        private mysqli $connection;
-        public function __construct($connection) {
+        private PDO $connection;
+        public function __construct(PDO $connection) {
             $this -> connection = $connection;
         }
 
@@ -11,50 +11,55 @@
 
         private function getTask(Task $task) {
             $id = $task -> getter('id');
-            $name = strip_tags($this -> connection -> escape_string($task -> getter('name')));
-            $description = strip_tags($this -> connection -> escape_string($task -> getter('description')));
+            $name = strip_tags($task -> getter('name'));
+            $description = strip_tags($task -> getter('description'));
             $deadline = $task -> getter('deadline');
             $priority = $task -> getter('priority');
             $concluded = ($task -> getter('concluded')) ? 1 : 0;
 
-            return [$name, $description, $deadline, $priority, $concluded, $id];
+            return [
+                'id' => $id,
+                'name' => $name, 
+                'description' => $description, 
+                'deadline' => $deadline, 
+                'priority' => $priority, 
+                'concluded' => $concluded, 
+            ];
         }
 
         public function save(Task $task) {
-            list($name, $description, $deadline, $priority, $concluded) = $this -> getTask($task); 
-
-            $task_query = "INSERT INTO tasks
+            $sql = "INSERT INTO tasks
                 (name, description, priority, deadline, concluded)
                 VALUES
                 (
-                    '{$name}',
-                    '{$description}',
-                    {$priority},
-                    '{$deadline}',
-                    {$concluded}
+                    :name,
+                    :description,
+                    :priority,
+                    :deadline,
+                    :concluded
                 )";
 
-            $this -> connection -> query($task_query);
+            $query = $this -> connection -> prepare($sql);
+            $query -> execute($this -> getTask($task));
             
             $attachments = $task -> getter('attachments');
             $this -> save_attachment($attachments);
         }
 
         public function edit(Task $task) {
-            list($name, $description, $deadline, $priority, $concluded, $id) = $this -> getTask($task);
+            $sql = "UPDATE tasks SET
+                    name = :name,
+                    description = :description,
+                    deadline = :deadline,
+                    priority = :priority,
+                    concluded = :concluded
+                WHERE id = :id";
 
-            $query = "UPDATE tasks SET
-                    name = '{$name}',
-                    description = '{$description}',
-                    deadline = '{$deadline}',
-                    priority = {$priority},
-                    concluded = {$concluded}
-                WHERE id = {$id}";
-
-            $this -> connection -> query($query);
-
+            $query = $this -> connection -> prepare($sql);
+            $query -> execute($this -> getTask($task));
+            
             $attachments = $task -> getter('attachments');
-            $this -> save_attachment($attachments, true);
+            $this -> save_attachment($attachments);
         }
 
         public function find(int $task_id = 0) {
@@ -67,15 +72,10 @@
 
         private function find_task(int $id) {
             $query = "SELECT * FROM tasks WHERE id = {$id}";
-            $task = mysqli_query($this -> connection, $query) -> fetch_object('Task');
+            $task = $this -> connection -> query($query, PDO::FETCH_CLASS, 'Task');
 
-            $attach_check = $this -> check_attachments($id);
-            if ($attach_check) {
-                $attachments = [];
-                while ($attach = $attach_check -> fetch_object('Attachment')) {
-                    $attachments[] = $attach;
-                }
-
+            $attachments = $this -> check_attachments($id);
+            if (count($attachments) > 0) {
                 $task -> setter('attachments', $attachments);
             }
 
@@ -84,19 +84,20 @@
 
         private function find_tasks() {
             $query = 'SELECT * FROM tasks';
-            $query_result = mysqli_query($this -> connection, $query);
+            $query_result = $this -> connection -> query($query, PDO::FETCH_CLASS, 'Task');
 
             $tasks = [];
-
-            while ($task = mysqli_fetch_object($query_result, 'Task')) {
+            
+            foreach ($query_result as $task) {
                 $attach_check = $this -> check_attachments($task -> getter('id'));
                 if ($attach_check) {
                     $attachments = [];
-                    while ($attach = $attach_check -> fetch_object('Attachment')) {
+                    foreach ($attach_check as $attach) {
                         $attachments[] = $attach;
                     }
                     $task -> setter("attachments", $attachments);
                 }
+
                 $tasks[] = $task;
             }
 
@@ -104,45 +105,46 @@
         }
 
         public function remove(int $task_id) {
-            $obj_query = mysqli_query($this -> connection, "SELECT * FROM tasks WHERE id = {$task_id}");
-            $task = mysqli_fetch_object($obj_query);
+            $this -> connection -> query("DELETE FROM tasks WHERE id = {$task_id}");
 
             $attachments = $this -> check_attachments($task_id);
-
-            if ($attachments) {
-                while ($attach = $attachments -> fetch_assoc()) {
-                    mysqli_query($this -> connection, "DELETE FROM attachments WHERE id = {$attach['id']}");
+            if (count($attachments) > 0) {
+                foreach ($attachments as $attach) {
+                    $attach_query = "DELETE FROM attachments WHERE id = {$attach['id']}";
+                    $this -> connection -> query($attach_query);
                     unlink("attachments/{$attach['file']}");
                 }
-            }
-            
-            $query = "DELETE FROM tasks WHERE id = {$task_id}";
-            mysqli_query($this -> connection, $query);
+            } 
         }
 
         public function removeAll() {
-            $delete_query = "DELETE FROM tasks, attachments";
+            $this -> connection -> query("DELETE FROM tasks, attachments");
 
             $attachments = $this -> connection -> query("SELECT * FROM attachments");
-            while ($attach = $attachments -> fetch_assoc()) {
+            while ($attach = $attachments -> fetch(PDO::FETCH_ASSOC)) {
                 unlink("attachments/{$attach['file']}");
             }
         }
 
         public function removeAttach(int $id) {
             $query = "SELECT * FROM attachments WHERE id = {$id}";
-            $attachment = $this -> connection -> query($query) -> fetch_assoc();
+            $attachment = $this -> connection -> query($query) -> fetch(PDO::FETCH_ASSOC);
 
             $this -> connection -> query("DELETE FROM attachments WHERE id = {$id}");
             unlink("attachments/{$attachment['file']}");
         }
 
         private function check_attachments(int $task_id) {
-            $check_attach_query = "SELECT * FROM attachments WHERE task_id = {$task_id}";
-            $attach_result = mysqli_query($this -> connection, $check_attach_query);
-
-            if ($attach_result -> num_rows > 0) {
-                return $attach_result;
+            $check_attach_query = "SELECT * FROM attachments WHERE task_id = :task_id";
+            $attach_result = $this -> connection -> prepare($check_attach_query);
+            $attach_result -> execute(['task_id' => $task_id]);
+            
+            if ($attach_result -> rowCount() > 0) {
+                $attachments = [];
+                while ($attach = $attach_result -> fetchObject('Attachment')) {
+                    $attachments[] = $attach;
+                }
+                return $attachments;
             } else {
                 return false;
             }
@@ -151,26 +153,31 @@
         private function save_attachment(array $attachments, $edit = false) {
             if (count($attachments) > 0) {
                 
-                $edit ? $id = $_POST['id'] : $id = $this -> connection -> insert_id;
+                $edit ? $id = $_POST['id'] : $id = $this -> connection -> lastInsertId();
 
                 foreach ($attachments as $attach) {
                     $attach -> setter('task_id', $id);
 
-                    $attach_name = strip_tags($this -> connection -> escape_string($attach -> getter('name')));
-                    $attach_file = strip_tags($this -> connection -> escape_string($attach -> getter('file')));
-
-                    $attach_query = "INSERT INTO attachments
+                    $data = [
+                        "task_id" => $attach -> getter('task_id'),
+                        "name" => strip_tags($this -> connection -> $attach -> getter('name')),
+                        "file" => strip_tags($this -> connection -> $attach -> getter('file'))
+                    ];
+                    
+                    $sql = "INSERT INTO attachments
                         (task_id, name, file)
                         VALUES
                         (
-                            {$attach -> getter('task_id')},
-                            '{$attach_name}',
-                            '{$attach_file}'
+                            :task_id,
+                            ':name',
+                            ':file'
                         )
                     ";
 
-                    $this -> connection -> query($attach_query);
-                    $attach -> setter('id', $this -> connection -> insert_id);
+                    $query = $this -> connection -> prepare($sql);
+                    $query -> execute($data);
+
+                    $attach -> setter('id', $this -> connection -> lastInsertId());
                 }   
             }
         }
