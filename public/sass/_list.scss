@@ -1,0 +1,199 @@
+.list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 20px;
+    @include mq("medium") {
+        transform: scale(1.5);
+        min-width: 60vw;
+        margin: 25% auto;
+    }
+    .wrapper {
+        padding: 10px 0;
+    }
+    .message {
+        @include typo(2, 36);
+        text-align: center;
+        margin: 25% 0;
+    }
+    .list {
+        max-height: 450px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+        @include mq("large") {
+            &::-webkit-scrollbar {
+                width: 20px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: $white_light;
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: $black_light;
+                border: 5px solid $white_light;
+                border-radius: 10px;
+            }
+        }
+    }
+    .legend {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px auto;
+        span {
+            margin-right: 8px;
+            @include typo(2, 14);
+        }
+        .lp rect{
+            fill: $low-priority;
+        }
+        .mp rect{
+            fill: $medium-priority;
+        }
+        .hp rect{
+            fill: $high-priority;
+        }
+    }
+    .eraseAll {
+        @include typo(2, 14);
+        max-width: fit-content;
+        padding: 3px 5px;
+        background-color: $white_light;
+        text-decoration: none;
+        border: 1px solid black;
+        border-radius: 5px;
+        transition: .1s ease-out;
+        &:hover {
+            background-color: $black_main;
+            color: $white_light;
+        }
+    }
+}
+
+.arrow-down {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    max-height: 20px;
+    img {
+        animation: shake 8s infinite alternate ease-in-out;
+    }
+    @include mq("large") {
+        display: none;
+    }
+}
+
+.task {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    overflow: hidden;
+    max-height: 80px;
+    @include setPriorityBG;
+    &.show-details {
+        .task-header {
+            justify-content: start;
+            gap: 10px;
+        }
+    }
+    .task-title {
+        @include typo(2, 18);
+        color: $white_light;
+        margin-bottom: 5px;
+    }
+    .task-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        img {
+            &.unshow {
+                display: none;
+            }
+        }
+    }
+    .details {
+        display: block;
+        @include typo(2, 11);
+        color: $white_light;
+        transition: all 0.2s;
+        p {
+            margin-bottom: 5px;
+        }
+        .description {
+            @include typo(2, 12);
+            color: $white_light;
+        }
+        .attachments {
+            margin-top: -10px;
+        }
+    }
+    .details.unshow {
+        display: none;
+    }
+}
+.options {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5px;
+    a, button {
+        @include typo(2, 11);
+        line-height: normal;
+        padding: 3px 5px;
+        background-color: $white_light;
+        text-decoration: none;
+        border: 1px solid black;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .disabled {
+        pointer-events: none;
+        background-color: $white_main;
+        color: $black_light;
+    }
+    @include mq("large") {
+        gap: 5px;
+    }
+}
+
+.blur-rect {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .task {
+        width: calc(100vw - 40px);
+        max-height: fit-content;
+        @include mq("medium") {
+            transform: scale(1.5);
+            max-width: 55vw;
+        }
+        @include mq("large") {
+            transform: scale(1.5);
+            max-width: 480px;
+        }
+    }
+    .show-details, .unshow-details {
+        button.show-details {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+        }
+    }
+    .show-details {
+        animation: show .25s ease-out forwards;
+    }
+    .unshow-details {
+        animation: hide .25s ease-out forwards;
+    }
+}
+
+.unshow {
+    display: none
+}

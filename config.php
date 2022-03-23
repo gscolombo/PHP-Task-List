@@ -1,4 +1,6 @@
 <?php 
+    const ROOT_DIR_PATH = __DIR__;
+
     // Conexão ao banco de dados (MySQL)
     const DB_USER = "systemtasks";
     const DB_PASSWORD = "system";

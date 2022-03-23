@@ -1,5 +1,5 @@
 <?php
-    require 'src/Controller/repository.php';
+    require 'src/Models/repository.php';
 
     try{
         $pdo = new PDO(DB_DSN, DB_USER, DB_PASSWORD);

@@ -17,7 +17,7 @@
         return $priority;
     }
 
-    function set_date($date, $toDB = false){
+    function set_date($date){
         $date_obj = DateTime::createFromFormat('Y-m-d', $date);
         return $date_obj -> format('d/m/Y');
     }
@@ -57,21 +57,30 @@
         return $files;
     }
 
+    function set_attach_index($file_name, $file_format) {
+        for ($i = 0, $j = 1; $i !== $j; $i++, $j++) {
+            $n = $i === 0 ? "" : "({$i})";
+            $new_file_name = $file_name . $n . $file_format;
+            $path = __DIR__ . "/attachments/" . $new_file_name;
+
+            if (! file_exists($path)) {
+                return $n;
+            }
+        }
+    }
+
     function set_attachment($file, Attachment $attachment) {
         $file_name = substr($file['name'], 0, -4);
         $file_format = substr($file['name'], -4);
 
-        for ($i = 0, $j = 1; $i !== $j; $i++, $j++) {
-            $n = $i === 0 ? "" : "_{$i}";
-            $new_file_name = $file_name . $n . $file_format;
+        $index = set_attach_index($file_name, $file_format);
 
-            if (! file_exists("attachments/" . $new_file_name)) {
-                $attachment -> setter('name', $file_name . $n);
-                $attachment -> setter('file', $new_file_name);
-                move_uploaded_file($file['tmp_name'], "attachments/" . $new_file_name);
-                $i = $j;
-            }
-        }
+        $new_file_name = $file_name . $index . $file_format;
+        $path = __DIR__ . "/attachments/" . $new_file_name;
+
+        $attachment -> setter('name', $file_name . $index);
+        $attachment -> setter('file', $new_file_name);
+        move_uploaded_file($file['tmp_name'],  $path);
     }
 
     function check_attach($file) {
@@ -144,5 +153,11 @@
         $log = "{$datetime} {$message}\n";
         
         file_put_contents("messages.log", $log, FILE_APPEND);
+    }
+
+    function filter_route($key) {
+        if ($key !== "route") {
+            return $key;
+        }
     }
 ?>

@@ -1,0 +1,247 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+    @include mq("medium") {
+        transform: scale(1.5);
+        min-width: 60vw;
+        margin: 25% auto;
+    }
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 0 10px 10px 10px;
+        label {
+            @include typo(2, 18, 300);
+            margin: 5px 0;
+        }
+        input, textarea {
+            border-radius: 2.5px;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            appearance: none;
+            display: none;
+        }
+        .form-title, .save{
+            @include typo(2, 24);
+            padding: 3px 10px;
+            background-color: $white_dark;
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .save{
+            @include typo(2, 18, 600);
+            transition: all 0.25s;
+            cursor: pointer;
+            &:hover{
+                background-color: $white_main;
+            }
+        }
+        textarea {
+            min-height: 70px;
+            resize: none;
+        }
+        .deadline-and-priority {
+            display: flex;
+            justify-content: space-between;
+        }
+        .deadline-box, .priority-box {
+            display: flex;
+            flex-direction: column;
+            min-width: 45%;
+        }
+        .deadline-box input {
+            @include typo(2, 12);
+            cursor: pointer;
+        }
+        .priority-box .priority-options {
+            display: flex;
+            justify-content: space-evenly;
+            border: 1px solid black;
+            border-radius: 2.5px;
+            input {
+                margin: 0;
+                &:checked+label {
+                    @include typo(2, 12);
+                    opacity: 1;
+                }
+            }
+            label {
+                transition: all 0.2s;
+                @include typo(2, 11);
+                opacity: 0.75;
+                cursor: pointer;
+            }
+        }
+        .concluded-and-reminder{
+            display: flex;
+            justify-content: space-between;
+            .concluded, .reminder {
+                @include typo(2, 14);
+                padding: 5px 16px;
+                border: 1px solid black;
+                border-radius: 5px;
+                box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+                transition: all .1s;
+                cursor: pointer;
+                user-select: none;
+            }
+            input:checked+label {
+                background-color: $white_dark;
+                color: $white_light;
+            }
+            @include mq("large") {
+                gap: 10px;
+            }
+        }
+        .attachment {
+            @include typo(2, 14);
+            padding: 5px 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+            transition: all .1s;
+            max-width: fit-content;
+            user-select: none;
+            cursor: pointer;
+            &:hover {
+                background-color: $white_dark;
+                color: $white_light;
+            }
+        }
+    }
+    &.edit {
+        background-color: $white_dark;
+        padding: 10px 20px 20px 20px;
+        border: 1px solid white;
+        border-radius: 5px;
+        max-width: calc(100vw - 40px);
+        animation: show .25s ease-out forwards;
+        @include mq("medium") {
+            transform: scale(1.5);
+            min-width: 60vw;
+            margin: 25% auto;
+        }
+        @include mq("large") {
+            transform: scale(1.5)
+        }
+        &.hide {
+            animation: hide .25s ease-out forwards;
+        }
+        fieldset {
+            overflow: visible;
+            label {
+                color: $white_light;
+            }
+        }
+        legend {
+            @include typo(2, 24);
+            padding: 3px 10px;
+            background-color: $white_light;
+            border: 1px solid white;
+            border-radius: 10px;
+            margin: 0 auto 10px auto;
+        }
+        .close-button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: none;
+            border: none;
+            padding: 0;
+            align-self: flex-end;
+            img {
+                min-height: 20px;
+            }
+        }
+        input, textarea {
+            min-width: 100%;
+            border: 1px solid white;
+            background-color: $white_light;
+            border-radius: 5px;
+            resize: none;
+            padding: 10px;
+        }
+        input {
+            &#name-edit {
+                @include typo(2, 18);
+            }
+            &#reminder-edit, &#concluded-edit {
+                display: none;
+            }
+            &#deadline-edit{
+                display: grid;
+                grid-template-columns: 70% 1fr;
+            }
+        }
+        .concluded-and-reminder {
+            label {
+                @include typo(2, 18);
+                border-radius: 5px;
+                padding: 10px;
+                background-color: $white_light;
+                transition: all 0.2s ease-out;
+                box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+            }
+            input:checked+label {
+                background-color: $white_dark;
+                color: white;
+            }
+        }
+        textarea[name="description"], input#deadline-edit, label[name="priority"] {
+            @include typo(2, 14);
+        }
+        .deadline-and-priority {
+            gap: 10px;
+        }
+        .priority-box {
+            .priority-options {
+                padding: 7.5px;
+                background-color: $white_light;
+                border: none;
+                label {
+                    opacity: 0.75;
+                    transition: all 0.2s ease-out;
+                }
+                input {
+                    display: none;
+                    &:checked+label {
+                        opacity: 1;
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+        .attachments {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin: 0;
+            label {
+                @include typo(2, 17);
+                background-color: $white_light;
+                border-radius: 5px;
+                box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+                padding: 10px;
+                max-width: fit-content;
+            }
+            .file-list-title {
+                z-index: 2;
+            }
+            input {
+                display: none;
+            }
+        }
+        .submit-button {
+            margin: 0 auto 10px auto;
+            box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+            border: none;
+            min-width: fit-content;
+            @include typo(2, 18);
+        }
+    }
+}
