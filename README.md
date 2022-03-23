@@ -1,3 +1,3 @@
-# PHP-Task-List
+# PHP Task List
 That is my first PHP project developed for learning purposes, following the contents from the book "Desenvolvimento web com PHP e MySQL" of Evaldo Junior Bento. However, in order to give myself a challenge and learn more how to integrate JS and PHP to obtain a better user experience, I aimed to structure it as a SPA, using Javascript to make client requests to the database through PHP controllers. All requests are made to the entrance point of the application and relevant data is sent back to dinamically change the contents of the page, just like a SPA should work. 
 If you have any suggestions of improvement or noticed any security breach in my code, please tell me. I'll be really glad for any help I can get. :) 
