@@ -34,14 +34,6 @@ export default function showDetails(e) {
         }
     })
 
-    // btnClone.addEventListener("click", () => {
-    //     taskClone.classList.replace("show-details", "unshow-details");
-    //     setTimeout(() => {
-    //         blurRect.removeChild(taskClone);
-    //         blurRect.remove();
-    //     }, 250)  
-    // });
-
     blurRect.append(taskClone);
     document.body.insertBefore(blurRect, document.querySelector("script"));
 }
