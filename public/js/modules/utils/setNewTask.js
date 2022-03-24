@@ -43,7 +43,9 @@ export default function setNewTask(task) {
             case 4:
                 button.classList.add("show-details");
                 button.innerText = "Ver detalhes";
-                button.addEventListener("click", showDetails);
+                button.addEventListener("click", () => {
+                    showDetails(div);
+                });
                 break;
         }
 
