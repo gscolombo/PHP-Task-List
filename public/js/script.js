@@ -20,7 +20,9 @@ tasks.forEach( task => {
     const concludeBtn = task.querySelector(".options button.conclude");
     const editBtn = task.querySelector(".options button.edit");
 
-    detailsBtn.addEventListener("click", showDetails);
+    detailsBtn.addEventListener("click", () => {
+        showDetails(task);
+    });
     duplicateBtn.addEventListener("click", e => databaseFetch(e, "duplicate"));
     deleteBtn.addEventListener("click", e => databaseFetch(e, "delete"));
     concludeBtn.addEventListener("click", e => databaseFetch(e, "conclude"));

@@ -40,6 +40,10 @@
 * {
     box-sizing: border-box;
     max-height: 100%;
+    // overflow: hidden;
+}
+
+html, body {
     overflow: hidden;
 }
 
@@ -137,7 +141,6 @@ input, textarea {
         background-color: $white_main;
         min-height: 50px;
         max-height: 100px;
-        max-width: 100%;
         list-style: inside;
         overflow-y: scroll;
         z-index: 1;
@@ -169,7 +172,6 @@ input, textarea {
             justify-content: space-between;
             background-color: $white_light;
             min-height: 25px;
-            max-width: 80vw;
             border-radius: 5px;
             border: 1px solid black;
             padding: 5px 5px 5px 7px;
@@ -179,6 +181,7 @@ input, textarea {
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 margin-bottom: 0;
+                overflow: hidden;
             }
             img {
                 transition: all .2s;

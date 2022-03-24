@@ -3,6 +3,9 @@ form {
     flex-direction: column;
     justify-content: center;
     padding: 0 20px;
+    @include mq("x-small") {
+        padding: 0 10px;
+    }
     @include mq("medium") {
         transform: scale(1.5);
         min-width: 60vw;
@@ -16,6 +19,9 @@ form {
         padding: 0 10px 10px 10px;
         label {
             @include typo(2, 18, 300);
+            @include mq("x-small") {
+                font-size: calc(14 / 16) + rem;
+            }
             margin: 5px 0;
         }
         input, textarea {
@@ -25,7 +31,7 @@ form {
             appearance: none;
             display: none;
         }
-        .form-title, .save{
+        .form-title {
             @include typo(2, 24);
             padding: 3px 10px;
             background-color: $white_dark;
@@ -46,42 +52,61 @@ form {
             resize: none;
         }
         .deadline-and-priority {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
         .deadline-box, .priority-box {
             display: flex;
             flex-direction: column;
-            min-width: 45%;
+            min-width: fit-content;
         }
         .deadline-box input {
+            display: grid;
+            grid-template-columns: fit-content(100%) fit-content(100%);
+            min-width: fit-content;
             @include typo(2, 12);
+            @include mq("x-small") {
+                font-size: calc(10 / 16) + rem;
+            }
             cursor: pointer;
         }
-        .priority-box .priority-options {
-            display: flex;
-            justify-content: space-evenly;
-            border: 1px solid black;
-            border-radius: 2.5px;
-            input {
-                margin: 0;
-                &:checked+label {
-                    @include typo(2, 12);
-                    opacity: 1;
+        .priority-box {
+            .priority-options {
+                display: flex;
+                justify-content: space-evenly;
+                border: 1px solid black;
+                border-radius: 2.5px;
+                @include mq("x-small") {
+                    gap: 2.5px;
+                    padding: 0 5px;
                 }
-            }
-            label {
-                transition: all 0.2s;
-                @include typo(2, 11);
-                opacity: 0.75;
-                cursor: pointer;
+                input {
+                    margin: 0;
+                    &:checked+label {
+                        @include typo(2, 12);
+                        opacity: 1;
+                    }
+                }
+                label {
+                    transition: all 0.2s;
+                    @include typo(2, 11);
+                    opacity: 0.75;
+                    cursor: pointer;
+                }
             }
         }
         .concluded-and-reminder{
             display: flex;
             justify-content: space-between;
+            gap: 10px;
             .concluded, .reminder {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
                 @include typo(2, 14);
+                box-sizing: content-box;
                 padding: 5px 16px;
                 border: 1px solid black;
                 border-radius: 5px;
@@ -89,6 +114,11 @@ form {
                 transition: all .1s;
                 cursor: pointer;
                 user-select: none;
+                min-height: calc(14 / 16) + rem;
+                max-width: fit-content;
+            }
+            .reminder {
+                grid-column: -1 / 2;
             }
             input:checked+label {
                 background-color: $white_dark;
@@ -97,6 +127,9 @@ form {
             @include mq("large") {
                 gap: 10px;
             }
+        }
+        .file-list .file {
+            max-width: 260px;
         }
         .attachment {
             @include typo(2, 14);
@@ -121,6 +154,10 @@ form {
         border-radius: 5px;
         max-width: calc(100vw - 40px);
         animation: show .25s ease-out forwards;
+        @include mq("x-small") {
+            transform: scale(0.85);
+            max-width: fit-content;
+        }
         @include mq("medium") {
             transform: scale(1.5);
             min-width: 60vw;
@@ -165,6 +202,9 @@ form {
             border-radius: 5px;
             resize: none;
             padding: 10px;
+            @include mq("x-small") {
+                padding: 5px;
+            }
         }
         input {
             &#name-edit {
@@ -192,7 +232,7 @@ form {
                 color: white;
             }
         }
-        textarea[name="description"], input#deadline-edit, label[name="priority"] {
+        textarea[name="description"], label[name="priority"] {
             @include typo(2, 14);
         }
         .deadline-and-priority {
@@ -227,7 +267,9 @@ form {
                 border-radius: 5px;
                 box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
                 padding: 10px;
-                max-width: fit-content;
+                max-width: 100%;
+                text-align: center;
+                margin: 10px 0 0 0;
             }
             .file-list-title {
                 z-index: 2;
@@ -235,13 +277,18 @@ form {
             input {
                 display: none;
             }
+            .file {
+                max-width: none;
+            }
         }
-        .submit-button {
-            margin: 0 auto 10px auto;
-            box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
-            border: none;
-            min-width: fit-content;
-            @include typo(2, 18);
-        }
+    }
+    .save {
+        margin: 10px auto 0 auto;
+        box-shadow: inset -2px -2px 5px rgba(0, 0, 0, .25);
+        border: 1px solid black;
+        border-radius: 10px;
+        background-color: $white_light;
+        min-width: fit-content;
+        @include typo(2, 24);
     }
 }

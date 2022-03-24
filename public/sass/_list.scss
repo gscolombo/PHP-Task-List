@@ -8,6 +8,9 @@
         min-width: 60vw;
         margin: 25% auto;
     }
+    @include mq("x-small") {
+        padding: 0 10px;
+    }
     .wrapper {
         padding: 10px 0;
     }
@@ -90,10 +93,14 @@
     overflow: hidden;
     max-height: 80px;
     @include setPriorityBG;
-    &.show-details {
+    &.show-details, &.unshow-details {
         .task-header {
-            justify-content: start;
-            gap: 10px;
+            justify-content: space-between;
+            .symbols {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
         }
     }
     .task-title {
@@ -105,11 +112,6 @@
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        img {
-            &.unshow {
-                display: none;
-            }
-        }
     }
     .details {
         display: block;
@@ -135,6 +137,9 @@
     display: flex;
     justify-content: space-evenly;
     margin-top: 5px;
+    @include mq("x-small") {
+        gap: 5px;
+    }
     a, button {
         @include typo(2, 11);
         line-height: normal;
@@ -175,15 +180,6 @@
         @include mq("large") {
             transform: scale(1.5);
             max-width: 480px;
-        }
-    }
-    .show-details, .unshow-details {
-        button.show-details {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
         }
     }
     .show-details {
