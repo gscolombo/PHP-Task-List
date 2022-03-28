@@ -1,0 +1,2 @@
+2022-01-22 16:01:24 Falha no envio de e-mail: SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+2022-03-28 15:22:15 Falha na criação de instância de cliente AWS S3. Erro: Cannot assign Aws\S3\S3Client to property Storage::$s3 of type S3Client

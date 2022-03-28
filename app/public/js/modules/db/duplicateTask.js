@@ -11,9 +11,11 @@ export default async function duplicateTask(url, task) {
 
     const clone = task.cloneNode(true);
     clone.setAttribute("id", data.task_id);
-    if (data.attach_ids.length > 0) {
+
+    if (data.attach_data.ids > 0) {
         clone.querySelectorAll(".attachments ul .file").forEach((attach, i) => {
-            attach.setAttribute("id", data.attach_ids[i]);
+            attach.setAttribute("id", data.attach_data.ids[i]);
+            attach.querySelector("p").innerText = data.attach_data.names[i];
         })
     }
 

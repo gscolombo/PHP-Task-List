@@ -62,6 +62,7 @@ export default function setEditedTask(data) {
             p.innerText = attach.name;
             a.href = attach.file;
             img.src = "./public/img/downloadBtn.svg";
+            img.classList.add("download");
     
             a.appendChild(img);
             li.appendChild(p);

@@ -24,7 +24,7 @@ export default function saveTask(url) {
         return res.json();
     })
     .then(json => {
-        list.appendChild(setNewTask(json.task));
+        list.appendChild(setNewTask(json.task, json.url));
         document.querySelector(".list-container .wrapper").classList.remove("unshow");
         document.querySelector(".list-container .eraseAll").classList.remove("unshow");
         document.querySelector(".list-container h2.message").classList.add("unshow");

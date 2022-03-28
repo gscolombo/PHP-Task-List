@@ -47,7 +47,7 @@
                                 ?>
                                 <li class="file" id="<?php echo $attachment -> getter('id')?>">
                                     <p><?php echo htmlentities($attachment -> getter('name')); ?></p>
-                                    <a href="attachments/<?php echo $attachment -> getter('file') ?>">
+                                    <a id="<?php echo $attachment -> getter('file'); ?>">
                                         <img class="download" src="./public/img/downloadBtn.svg" alt="Botão de download">
                                     </a>
                                 </li>

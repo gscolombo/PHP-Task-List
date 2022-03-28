@@ -8,7 +8,6 @@ export default function showDetails(task) {
     taskClone.querySelector(".options").remove();
 
     const header = taskClone.querySelector(".task-header");
-
     const img = document.createElement("img");
 
     img.src = "./public/img/removeBtnWhite.svg";
@@ -26,6 +25,16 @@ export default function showDetails(task) {
     imgBox.classList.add("symbols");
     images.forEach(img => imgBox.appendChild(img));
     header.appendChild(imgBox);
+
+    if (task.querySelectorAll(".attachments .file-list .file").length > 0) {
+        const links = Array.from(taskClone.querySelectorAll(".file a"));
+        links.forEach(async (a) => {
+            const key = a.id;
+            const req = await fetch(location.href + `?route=storage&key=${key}`);
+            const json =  await req.json();
+            a.href = json.url;
+        })
+    }
 
     blurRect.append(taskClone);
     document.body.insertBefore(blurRect, document.querySelector("script"));

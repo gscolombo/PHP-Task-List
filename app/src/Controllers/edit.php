@@ -1,6 +1,7 @@
 <?php
     $is_invalid = false;
     $errors = [];
+    $response = [];
 
     header('Content-type: application/json; charset=UTF-8');
 
@@ -12,7 +13,7 @@
 
         $task = new Task();
         set_task($task);
-
+        
         // Upload de anexos
         $has_file = false;
         foreach ($_FILES['attachment']['name'] as $file) {
@@ -20,15 +21,16 @@
                 $has_file = true;
             }
         }
-
+        
         if ($has_file) {
             $files = rearrange_files('attachment');
-
             foreach ($files['attachment'] as $file) {
                 if (check_attach($file)) {
                     $attachment = new Attachment();
-                    set_attachment($file, $attachment);
+                    $prev_attachs = $s3 -> get_objects($file['name']);
+                    set_attachment($file, $attachment, $prev_attachs);
                     $attachments[] = $attachment;
+                    $s3 -> put_object($attachment -> getter("file"), $file['tmp_name']);
                 } else {
                     $is_invalid = true;
                     $errors['attachment'] = "O formato do arquivo não é permitido! \n (Somente .pdf ou .zip)";
@@ -36,6 +38,7 @@
                 }
             }
         }
+        
 
         if (! $is_invalid) {
             $has_attachments = isset($attachments) && is_array($attachments);
@@ -47,16 +50,28 @@
             if ($has_attachments) {
                 $task -> setter('attachments', $attachments);
             }
-            $id = $repo -> save($task);
-            $task -> setter('id', $id["task_id"]);
+            
+            $repo -> edit($task);
             if ($task -> getter("deadline") !== "") {
                 $task -> setter("deadline", set_date($task -> getter("deadline")));
             }
 
-            $query = "SELECT COUNT(*) FROM tasks";
-            $number_of_rows = $repo -> getConnection() -> query($query) -> fetchColumn();
-
-            echo json_encode(["task" => $task, "rows" => $number_of_rows]);
+            $response['data'] = $task;
+            $response['status'] = "success";
+        } else {
+            http_response_code(400);
+            $response['status'] = "failure";
+            $response['errors'] = $errors;
         }
+        echo json_encode($response);
+    }
+    
+    if (array_key_exists("id", $_GET) && $_GET['id'] !== "") {
+        $task = $repo -> find($_GET['id']);
+
+        if ($task) {
+            $task = $task -> jsonSerialize();
+        }
+        echo json_encode($task);
     }
 ?>

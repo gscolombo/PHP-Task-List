@@ -55,12 +55,12 @@
             
             $attachments = $task -> getter('attachments');
             if ($attachments) {
-                $attach_ids = $this -> save_attachment($attachments);
+                $attach_data = $this -> save_attachment($attachments);
             } else {
-                $attach_ids = [];
+                $attach_data = [];
             }
 
-            return ["task_id" => $last_task_id, "attach_ids" => $attach_ids];
+            return ["task_id" => $last_task_id, "attach_data" => $attach_data];
         }
 
         public function edit(Task $task) {
@@ -133,9 +133,10 @@
                 foreach ($attachments as $attach) {
                     $attach_query = "DELETE FROM attachments WHERE id = {$attach -> getter('id')}";
                     $this -> connection -> query($attach_query);
-                    unlink("attachments/{$attach -> getter('file')}");
                 }
-            } 
+            }
+            
+            return $attachments;
         }
 
         public function removeAll() {
@@ -153,7 +154,7 @@
             $attachment = $this -> connection -> query($query) -> fetch(PDO::FETCH_ASSOC);
 
             $this -> connection -> query("DELETE FROM attachments WHERE id = {$id}");
-            unlink("attachments/{$attachment['file']}");
+            return $attachment["file"];
         }
 
         private function check_attachments(int $task_id) {
@@ -178,6 +179,7 @@
                 $edit ? $id = $_POST['id'] : $id = $this -> connection -> lastInsertId();
                 
                 $attach_ids = [];
+                $attach_names = [];
                 foreach ($attachments as $attach) {
                     $attach -> setter('task_id', $id);
 
@@ -203,9 +205,11 @@
                     $attach -> setter('id', $this -> connection -> lastInsertId());
 
                     $attach_ids[] = $attach -> getter("id");
+                    $attach_names[] = $attach -> getter("name");
                 }
                 
-                return $attach_ids;
+                $attach_data = ["ids" => $attach_ids, "names" => $attach_names];
+                return $attach_data;
             }
         }
     }
