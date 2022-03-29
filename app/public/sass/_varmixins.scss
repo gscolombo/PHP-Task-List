@@ -12,6 +12,7 @@ $low-priority: #4F5B62;
 $medium-priority: #263238;
 $high-priority: #102027;
 
+
 @mixin setPriorityBG {
     &.lp {
         background-color: $low-priority;
@@ -44,9 +45,9 @@ $high-priority: #102027;
 $x-small: 320px;
 $small: 400px;
 $medium: 760px;
-$large: 1200px;
+$large: 1024px;
 
-@mixin  mq($device) {
+@mixin  mq($device, $min: "", $max: "") {
     @if ($device == "large") {
         @media screen and (min-width: #{$large}) {
             @content;
@@ -69,6 +70,10 @@ $large: 1200px;
         }
     } @else if ($device == "x-small") {
         @media screen and (max-width: #{$x-small}) {
+            @content;
+        }
+    } @else if ($device == "custom") {
+        @media screen and (min-width: #{$min}) and (max-width: #{$max}) {
             @content;
         }
     }

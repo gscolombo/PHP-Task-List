@@ -56,7 +56,7 @@ span {
     @include typo(1, 48, 500);
     text-align: center;
     line-height: 42px;
-    margin: 60px auto 0 auto;
+    margin: 30px auto 0 auto;
     max-width: 75%;
     @include mq("small") {
         @include typo(1, 36, 500);
@@ -71,10 +71,14 @@ span {
     @include mq("large") {
         display: flex;
         align-items: flex-start;
-        margin: 20vh 0;
+        margin: 18vh 0;
         justify-content: center;
         gap: 40px;
-        transform: scale(1.5)
+        transform: scale(1.5);
+        min-width: 100vw;
+    }
+    @include mq("custom", $large, "1200px") {
+        transform: scale(1.25);
     }
 }
 
@@ -211,6 +215,12 @@ input, textarea {
     padding: 20px;
     max-width: 30vw;
     backdrop-filter: blur(5px);
+    @include mq("small&medium") {
+        max-width: none;
+    }
+    @include mq("small") {
+        max-width: 80vw;
+    }
     span {
         grid-column: 1 / -1;
         margin-bottom: 10px;

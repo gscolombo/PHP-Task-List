@@ -12,7 +12,7 @@
         <div class="deadline-and-priority">
             <div class="deadline-box">
                 <label class="deadline">Prazo:</label>
-                <input id="deadline" type="date" name="deadline">
+                <input id="deadline" type="date" name="deadline" placeholder="dd/mm/aaaa">
             </div>
             <div class="priority-box">
             <label class="priority">Prioridade:</label>
