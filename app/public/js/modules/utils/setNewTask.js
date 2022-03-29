@@ -50,7 +50,6 @@ export default function setNewTask(task, url) {
     list.classList.add("file-list")
 
     if (task.attachments.length > 0) {
-        let i = 0;
         task.attachments.forEach(attach => {
             const li = document.createElement("li");
             const p = document.createElement("p");
@@ -70,8 +69,6 @@ export default function setNewTask(task, url) {
             li.appendChild(a);
     
             list.appendChild(li);
-
-            i++;
         })
     
         attachments.appendChild(listTitle);
